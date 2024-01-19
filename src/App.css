@@ -6,7 +6,7 @@
 /* Root */
 :root {
   font-size: 62.5%;
-  --h1: clamp(3.2rem, 4vw, 4rem);
+  --h1: clamp(3.2rem, 3.8vw, 3.8rem);
   --column-gap: clamp(2rem, 4.2vw, 4.2rem);
   --gap: clamp(2rem, 4.2vw, 4.2rem);
   --title-space: clamp(1.5rem, 2vw, 2rem);
@@ -56,7 +56,52 @@ body {
 }
 
 .app-container header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
   margin-bottom: 4rem;
+  @media (width < 768px) {
+    flex-direction: column;
+    text-align: left;
+    align-items: start;
+  }
+}
+
+.app-container header button {
+  font-size: var(--body-text);
+  color: var(--contrast-color);
+  padding: .4rem 1rem;
+  background: var(--accent-color);
+  font-family: "Source Sans 3", sans-serif;
+  font-weight: 900;
+  border: 0;
+  transition: 300ms ease-in-out;
+}
+
+.app-container header button:hover {
+  filter: brightness(85%);
+}
+
+.app-container header button:active {
+  transform: scale(0.95);
+}
+
+.app-container header .daftar {
+  background: transparent;
+  border: .1rem solid var(--contrast-color);
+  color: var(--contrast-color);
+}
+
+.app-container header .masuk {
+  background: var(--contrast-color);
+  color: var(--primary-color);
+}
+
+.app-container header div {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
 .app-container h1,
@@ -79,7 +124,7 @@ body {
 .app-container h1 {
   font-size: var(--h1);
   color: var(--contrast-color);
-  text-align: center;
+  text-align: left;
 }
 
 .app-container h1 span {
@@ -130,6 +175,30 @@ body {
   margin-top: 2rem;
 }
 
+.app-container .list-capres ul li {
+  position: relative;
+  transition: 500ms ease-in-out;
+}
+
+.app-container .list-capres ul li h1 {
+  display: none;
+}
+
+.app-container .list-capres ul li:hover h1  {
+  display: block;
+  position: absolute;
+  top: 40%;
+  font-family: "Open Sans", sans-serif;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--h1);
+  transition: 500ms ease-in-out;
+  font-weight: 700;
+  border: .2rem solid green;
+  color: green;
+  padding: 1rem;
+}
+
 .app-container .list-capres figure {
   width: 100%;
   box-sizing: border-box;
@@ -174,6 +243,8 @@ body {
 .app-container .list-alasan ul li p {
   text-align: left;
 }
+
+
 
 
 

@@ -1,13 +1,49 @@
+import { useReducer } from "react";
 import "./App.css";
 import "./styles/reset.css";
 
+const initialState = {
+  isAuthenticated: false
+};
+
+const actionTypes = {
+  SET_IS_AUTHENTICATED: "SET_IS_AUTHENTICATED",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case actionTypes.SET_IS_AUTHENTICATED:
+      return { ...state, isAuthenticated: action.payload };
+    default:
+      return state;
+  }
+};
+
+const setIsAuthenticatedAction = () => ({
+  type: actionTypes.SET_IS_AUTHENTICATED,
+});
+
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { isAuthenticated } = state;
+
   return (
     <div className="app-container">
       <header>
         <h1>
-          Web Pemilu <span>Capres</span>
+          Pemilu Online <span>Capres</span>
         </h1>
+        {isAuthenticated ? (
+          <div>
+            <p>Rendi Virgantara Setiawan</p>
+            <button>Keluar</button>
+          </div>
+        ) : (
+          <div>
+            <button className="daftar">Daftar</button>
+            <button className="masuk">Masuk</button>
+          </div>
+        )}
       </header>
       <main>
         <section className="list-capres">
@@ -20,6 +56,7 @@ function App() {
                   <h5>Presiden : Prabowo Subianto</h5>
                   <p>Wakil : Gibran Rakabuming Raka</p>
                 </figcaption>
+                <h1 className="prabowo">TERPILIH!</h1>
               </figure>
             </li>
             <li>
@@ -29,6 +66,7 @@ function App() {
                   <h5>Presiden : Ganjar Pranowo</h5>
                   <p>Wakil : Mahfud Md</p>
                 </figcaption>
+                <h1 className="ganjar">TERPILIH!</h1>
               </figure>
             </li>
             <li>
@@ -38,6 +76,7 @@ function App() {
                   <h5>Presiden : Anies Baswedan</h5>
                   <p>Wakil : Muhaimin Iskandar</p>
                 </figcaption>
+                <h1 className="anies">TERPILIH!</h1>
               </figure>
             </li>
           </ul>
@@ -70,26 +109,29 @@ function App() {
               <blockquote>
                 <p>
                   " Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Corrupti sed quae fuga in, reiciendis labore! " - <strong>Ilham Ali</strong>
+                  Corrupti sed quae fuga in, reiciendis labore! " -{" "}
+                  <strong>Ilham Ali</strong>
                 </p>
-                
               </blockquote>
             </li>
             <li>
               <blockquote>
                 <p>
-                  " Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur hic officia fuga quidem laborum, eligendi voluptatibus inventore nesciunt assumenda consectetur suscipit dolore maiores quasi iste reiciendis alias, magnam praesentium sed? " - <strong>Fajar</strong>
+                  " Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Consequuntur hic officia fuga quidem laborum, eligendi
+                  voluptatibus inventore nesciunt assumenda consectetur suscipit
+                  dolore maiores quasi iste reiciendis alias, magnam praesentium
+                  sed? " - <strong>Fajar</strong>
                 </p>
-                
               </blockquote>
             </li>
             <li>
               <blockquote>
                 <p>
                   " Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Corrupti sed quae fuga in, reiciendis labore! " - <strong>Toni</strong>
+                  Corrupti sed quae fuga in, reiciendis labore! " -{" "}
+                  <strong>Toni</strong>
                 </p>
-                
               </blockquote>
             </li>
           </ul>

@@ -7,6 +7,7 @@
 :root {
   font-size: 62.5%;
   --h1: clamp(3.2rem, 3.8vw, 3.8rem);
+  --setempel-color: #ffffff;
   --column-gap: clamp(2rem, 4.2vw, 4.2rem);
   --gap: clamp(2rem, 4.2vw, 4.2rem);
   --title-space: clamp(1.5rem, 2vw, 2rem);
@@ -149,13 +150,34 @@ body {
 
 .app-container p,
 .app-container a,
-.app-container figcaption {
+.app-container figcaption,
+input {
   font-family: "Source Sans 3";
   font-size: var(--body-text);
   color: var(--body-color);
   line-height: 1.5;
   font-weight: 400;
   max-width: 80ch;
+}
+
+.app-container .wrapper h1 {
+  margin: 4rem 0;
+}
+
+.app-container label {
+  font-weight: 700;
+  font-family: "Open Sans", sans-serif;
+  font-size: var(--h5);
+  color: var(--headings-color);
+  display: block;
+  margin-bottom: 2rem;
+}
+
+.app-container input {
+  width: 100%;
+  margin-top: 1rem;
+  box-sizing: border-box;
+  height: 3.2rem;
 }
 
 .app-container strong {
@@ -165,6 +187,7 @@ body {
 
 .app-container section {
   margin-bottom: 4rem;
+  box-sizing: border-box;
 }
 
 .app-container .list-capres ul {
@@ -176,44 +199,48 @@ body {
 }
 
 .app-container .list-capres ul li {
-  position: relative;
   transition: 500ms ease-in-out;
 }
 
 .app-container .list-capres ul li h1 {
   display: none;
-}
-
-.app-container .list-capres ul li:hover h1  {
-  display: block;
   position: absolute;
-  top: 40%;
+  top: 50%;
   font-family: "Open Sans", sans-serif;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: var(--h1);
   transition: 500ms ease-in-out;
   font-weight: 700;
-  border: .2rem solid green;
-  color: green;
+  transform-origin: top left;
+  rotate: z 30deg;
+  border: .2rem solid var(--setempel-color);
+  color: var(--setempel-color);
   padding: 1rem;
 }
 
 .app-container .list-capres figure {
   width: 100%;
-  box-sizing: border-box;
   height: 100%;
+  box-sizing: border-box;
 }
 
 .app-container .list-capres h3 {
   width: 100%;
 }
 
-.app-container figure img {
+.app-container figure div {
+  position: relative;
   height: 80%;
   width: 100%;
-  box-sizing: border-box;
   margin-bottom: .8rem;
+  box-sizing: border-box;
+}
+
+.app-container figure img {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .app-container .list-suara ul {
@@ -244,8 +271,27 @@ body {
   text-align: left;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.overlay .wrapper {
+  width: 30%;
+  background: var(--primary-color);
+  padding: 2rem;
+  padding-top: 0;
+}
 
-
+.overlay .wrapper h1 {
+  text-align: center;
+}
 
 

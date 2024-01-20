@@ -6,10 +6,6 @@ import SignUp from "./SignUp";
 function UserAuthentication() {
   const { formType, dispatch, setFormTypeAction } = useContext(AppContext);
 
-  useEffect(() => {
-    dispatch(setFormTypeAction("login"))
-  }, [])
-
   return (
     <div className="overlay">
       <div className="wrapper">

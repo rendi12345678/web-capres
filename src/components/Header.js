@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { AppContext } from "../App";
+import Button from "./Button";
 
 function Header() {
-  const { isAuthenticated } = useContext(AppContext);
+  const { isAuthenticated, setFormTypeAction, dispatch } = useContext(AppContext);
 
   return (
     <header>
@@ -16,8 +17,12 @@ function Header() {
         </div>
       ) : (
         <div>
-          <button className="daftar">Daftar</button>
-          <button className="masuk">Masuk</button>
+          <Button className="daftar" handleClick={() => dispatch(setFormTypeAction("sign up"))}>
+            Daftar
+          </Button>
+          <Button className="masuk" handleClick={() => dispatch(setFormTypeAction("login"))}>
+            Masuk
+          </Button>
         </div>
       )}
     </header>

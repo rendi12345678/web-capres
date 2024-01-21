@@ -80,11 +80,15 @@ body {
   transition: 300ms ease-in-out;
 }
 
-.app-container header button:hover {
+.app-container button {
+  transition: 300ms ease-in-out;
+}
+
+.app-container button:hover {
   filter: brightness(85%);
 }
 
-.app-container header button:active {
+.app-container button:active {
   transform: scale(0.95);
 }
 
@@ -305,6 +309,12 @@ input {
   grid-template-columns: 1fr;
 }
 
+.overlay form div {
+  margin: auto;
+  display: flex;
+  gap: 2rem;
+}
+
 .overlay form p {
   text-align: center;
   margin-top: 1rem;
@@ -325,6 +335,18 @@ input {
   padding: .5rem 2.2rem;
   font-family: "Source Sans 3", sans-serif;
   font-weight: 900;
+}
+
+.overlay form .close-btn {
+  background: transparent;
+  border: .1rem solid var(--contrast-color); 
+  color: var(--contrast-color);
+}
+
+.overlay .change-form-type-btn {
+  padding: 0;
+  background: transparent;
+  color: var(--headings-color);
 }
 
 @media (width < 576px) {

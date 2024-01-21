@@ -1,11 +1,17 @@
 import React, { useContext } from "react";
 import Input from "./Input";
-import Button from './Button';
+import Button from "./Button";
 import { AppContext } from "../App";
 
 function Login() {
-  const {handleOnchange, dispatch, formValues, setFormTypeAction} = useContext(AppContext)
-  const {name, password} = formValues;
+  const {
+    handleOnchange,
+    dispatch,
+    formValues,
+    setFormTypeAction,
+    setIsOpenUserAuthAction,
+  } = useContext(AppContext);
+  const { name, password } = formValues;
 
   return (
     <>
@@ -17,7 +23,7 @@ function Login() {
           handleOnChange={handleOnchange}
           name="nama"
           placeholder="Masukkan nama anda!"
-          />
+        />
         <Input
           type="password"
           value={password}
@@ -25,8 +31,24 @@ function Login() {
           name="password"
           placeholder="Masukkan kata sandi!"
         />
-        <Button type="submit">Masuk</Button>
-        <p><span>Belum punya akun?</span> <a href="#" onClick={() => dispatch(setFormTypeAction("sign up"))}>Daftar</a></p>
+        <div>
+          <Button
+            type="button"
+            className="close-btn"
+            handleClick={() => dispatch(setIsOpenUserAuthAction(false))}
+          >
+            Keluar
+          </Button>
+          <Button type="submit">
+            Masuk
+          </Button>
+        </div>
+        <p>
+          <span>Belum punya akun?</span>{" "}
+          <Button className="change-form-type-btn" handleClick={() => dispatch(setFormTypeAction("sign up"))}>
+            Daftar
+          </Button>
+        </p>
       </form>
     </>
   );

@@ -1,4 +1,4 @@
-import { useReducer, createContext } from "react";
+import { useReducer, createContext, useEffect } from "react";
 import "./App.css";
 import "./styles/reset.css";
 import ListCapres from "./components/ListCapres";
@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import ListSuara from "./components/ListSuara";
 import ListAlasan from "./components/ListAlasan";
 import UserAuthentication from "./components/UserAuthentication";
+import axios from 'axios';
 
 export const AppContext = createContext();
 
@@ -16,12 +17,14 @@ const initialState = {
     nama: "",
     password: "",
   },
+  isOpenUserAuth: false,
 };
 
 const actionTypes = {
   SET_IS_AUTHENTICATED: "SET_IS_AUTHENTICATED",
   SET_FORM_TYPE: "SET_FORM_TYPE",
   SET_FORM_VALUES: "SET_FORM_VALUES",
+  SET_IS_OPEN_USER_AUTH: "SET_IS_OPEN_USER_AUTH",
 };
 
 const reducer = (state, action) => {
@@ -29,7 +32,7 @@ const reducer = (state, action) => {
     case actionTypes.SET_IS_AUTHENTICATED:
       return { ...state, isAuthenticated: action.payload };
     case actionTypes.SET_FORM_TYPE:
-      return { ...state, formType: action.payload };
+      return { ...state, formType: action.payload, isOpenUserAuth: true };
     case actionTypes.SET_FORM_VALUES:
       return {
         ...state,
@@ -38,6 +41,8 @@ const reducer = (state, action) => {
           ...action.payload,
         },
       };
+    case actionTypes.SET_IS_OPEN_USER_AUTH:
+      return { ...state, isOpenUserAuth: action.payload };
     default:
       return state;
   }
@@ -53,28 +58,53 @@ const setFormTypeAction = (value) => ({
   payload: value,
 });
 
-const setFormValuesAction = value => ({
+const setFormValuesAction = (value) => ({
   type: actionTypes.SET_FORM_VALUES,
+  payload: value,
+});
+
+const setIsOpenUserAuthAction = (value) => ({
+  type: actionTypes.SET_IS_OPEN_USER_AUTH,
   payload: value,
 });
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { isAuthenticated, formType, formValues } = state;
+  const { isAuthenticated, formType, formValues, isOpenUserAuth } = state;
 
-  const handleOnchange = e => {
-    dispatch(setFormValuesAction({[e.target.name]: e.target.value}))
+  const handleOnchange = (e) => {
+    dispatch(setFormValuesAction({ [e.target.name]: e.target.value }));
+  };
+
+  const postData = async (endpoint, data) => {
+    const localServerUrl = "http://localhost:5000";
+    const fullUrlString = `${localServerUrl}/api/${endpoint}`;
+
+    const response = await axios.post(fullUrlString, {
+      data
+    })
+
+    console.log("Response :", response.data.msg)
+
   }
+
+  useEffect(() => {
+   
+    return () => postData("login", "empty")
+
+  }, [])
 
   const contextValue = {
     dispatch,
     setIsAuthenticatedAction,
+    isOpenUserAuth,
     isAuthenticated,
     formType,
     setFormTypeAction,
     formValues,
     setFormValuesAction,
-    handleOnchange
+    handleOnchange,
+    setIsOpenUserAuthAction
   };
 
   return (

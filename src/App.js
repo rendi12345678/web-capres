@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import ListSuara from "./components/ListSuara";
 import ListAlasan from "./components/ListAlasan";
 import UserAuthentication from "./components/UserAuthentication";
-import axios from 'axios';
+import axios from "axios";
 
 export const AppContext = createContext();
 
@@ -71,28 +71,36 @@ const setIsOpenUserAuthAction = (value) => ({
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { isAuthenticated, formType, formValues, isOpenUserAuth } = state;
+  const localServerUrl = "http://localhost:5000";
 
   const handleOnchange = (e) => {
     dispatch(setFormValuesAction({ [e.target.name]: e.target.value }));
   };
 
   const postData = async (endpoint, data) => {
-    const localServerUrl = "http://localhost:5000";
-    const fullUrlString = `${localServerUrl}/api/${endpoint}`;
+    const fullUrlString = `${localServerUrl}/api${endpoint}`;
+    const response = await axios.post(fullUrlString, data);
 
-    const response = await axios.post(fullUrlString, {
-      data
-    })
+    console.log("Response :", response.data);
+  };
 
-    console.log("Response :", response.data.msg)
+  const getData = async (endpoint) => {
+    const fullUrlString = `${localServerUrl}/api${endpoint}`;
+    const response = await axios.get(fullUrlString);
 
-  }
+    console.log("Is Authenticated:", response.data);
+  };
 
   useEffect(() => {
-   
-    return () => postData("login", "empty")
+    postData("/login", {
+      nama: "Rendi",
+      password: "12345678",
+    });
+  }, []);
 
-  }, [])
+  useEffect(() => {
+    getData("/isAuthenticated");
+  }, []);
 
   const contextValue = {
     dispatch,
@@ -104,7 +112,7 @@ function App() {
     formValues,
     setFormValuesAction,
     handleOnchange,
-    setIsOpenUserAuthAction
+    setIsOpenUserAuthAction,
   };
 
   return (

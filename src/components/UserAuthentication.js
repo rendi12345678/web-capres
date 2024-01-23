@@ -4,7 +4,7 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 
 function UserAuthentication() {
-  const { formType, dispatch, setFormTypeAction, isOpenUserAuth } =
+  const { formType, isOpenUserAuth } =
     useContext(AppContext);
 
   return (
@@ -13,7 +13,7 @@ function UserAuthentication() {
       style={{ display: isOpenUserAuth ? "flex" : "none" }}
     >
       <div className="wrapper">
-        {formType === "login" ? <Login /> : <SignUp />}
+        {formType === "/login" ? <Login /> : <SignUp />}
       </div>
     </div>
   );

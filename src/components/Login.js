@@ -10,13 +10,14 @@ function Login() {
     formValues,
     setFormTypeAction,
     setIsOpenUserAuthAction,
+    handleLoginSubmit
   } = useContext(AppContext);
   const { name, password } = formValues;
 
   return (
     <>
       <h1>Masuk</h1>
-      <form>
+      <form onSubmit={handleLoginSubmit}>
         <Input
           type="text"
           value={name}
@@ -29,7 +30,7 @@ function Login() {
           value={password}
           handleOnChange={handleOnchange}
           name="password"
-          placeholder="Masukkan kata sandi!"
+          placeholder="Masukkan password anda!"
         />
         <div>
           <Button
@@ -45,7 +46,7 @@ function Login() {
         </div>
         <p>
           <span>Belum punya akun?</span>{" "}
-          <Button className="change-form-type-btn" handleClick={() => dispatch(setFormTypeAction("sign up"))}>
+          <Button className="change-form-type-btn" handleClick={() => dispatch(setFormTypeAction("/sign up"))}>
             Daftar
           </Button>
         </p>

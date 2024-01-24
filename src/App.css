@@ -71,7 +71,7 @@ body {
 
 .app-container header button {
   color: #f5f5f5;
-  padding: .4rem 1rem;
+  padding: 0.4rem 1rem;
   background: var(--accent-color);
   font-family: "Source Sans 3", sans-serif;
   font-weight: 900;
@@ -93,7 +93,7 @@ body {
 
 .app-container header .daftar {
   background: transparent;
-  border: .1rem solid var(--contrast-color);
+  border: 0.1rem solid var(--contrast-color);
   color: var(--contrast-color);
 }
 
@@ -155,7 +155,8 @@ body {
 .app-container p,
 .app-container a,
 .app-container figcaption,
-input, select {
+input,
+select {
   font-family: "Source Sans 3";
   font-size: var(--body-text);
   color: var(--body-color);
@@ -167,7 +168,7 @@ input, select {
 select {
   color: var(--contrast-color);
   font-weight: 400;
-  background: var(--secondary-color); 
+  background: var(--secondary-color);
   font-family: "Source Sans 3";
 }
 
@@ -205,7 +206,7 @@ select {
   font-weight: 700;
   transform-origin: top left;
   rotate: z 30deg;
-  border: .2rem solid var(--setempel-color);
+  border: 0.2rem solid var(--setempel-color);
   color: var(--setempel-color);
   padding: 1rem;
 }
@@ -224,7 +225,7 @@ select {
   position: relative;
   height: 80%;
   width: 100%;
-  margin-bottom: .8rem;
+  margin-bottom: 0.8rem;
   box-sizing: border-box;
 }
 
@@ -257,7 +258,6 @@ select {
   row-gap: 1rem;
 }
 
-
 .app-container .list-alasan ul li p {
   text-align: left;
 }
@@ -268,7 +268,7 @@ select {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,.7);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -327,7 +327,7 @@ select {
 }
 
 .overlay form p span {
-  opacity: .6;
+  opacity: 0.6;
 }
 
 .overlay button {
@@ -338,14 +338,14 @@ select {
   margin: auto;
   margin-top: 1rem;
   width: fit-content;
-  padding: .5rem 2.2rem;
+  padding: 0.5rem 2.2rem;
   font-family: "Source Sans 3", sans-serif;
   font-weight: 900;
 }
 
 .overlay form .close-btn {
   background: transparent;
-  border: .1rem solid var(--contrast-color); 
+  border: 0.1rem solid var(--contrast-color);
   color: var(--contrast-color);
 }
 
@@ -356,7 +356,7 @@ select {
 }
 
 .overlay .error-msg {
-  font-size: calc(var(--body-text) - .2rem);
+  font-size: calc(var(--body-text) - 0.2rem);
   color: var(--accent-color);
   margin-bottom: -1rem;
   text-align: left;
@@ -368,5 +368,33 @@ select {
     width: 100svh;
     height: 100svh;
     align-content: center;
+  }
+}
+
+/* Loading Animation */
+.loader {
+  margin:auto;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  position:fixed;
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  z-index: 9999;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

@@ -10,7 +10,9 @@ function Login() {
     formValues,
     setFormTypeAction,
     setIsOpenUserAuthAction,
-    handleLoginSubmit
+    handleLoginSubmit,
+    isLoading,
+    setIsLoadingAction
   } = useContext(AppContext);
   const { name, password } = formValues;
 

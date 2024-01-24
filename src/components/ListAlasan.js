@@ -22,7 +22,6 @@ function ListAlasan() {
   }, [users]);
 
   const printAlasan = useMemo(() =>
-    // Hapus pemanggilan fungsi, cukup gunakan referensi fungsi
     (data) =>
       data.reverse().map((user, index) => (
         <li key={index}>

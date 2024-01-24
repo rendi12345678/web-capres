@@ -215,7 +215,7 @@ function App() {
       try {
         dispatch(setIsLoadingAction(true));
         const data = await getData("/users");
-        dispatch(setUsersAction(data.users));
+        dispatch(setUsersAction(data.users.reverse()));
       } finally {
         dispatch(setIsLoadingAction(false));
       }

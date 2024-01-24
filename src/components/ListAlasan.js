@@ -23,7 +23,7 @@ function ListAlasan() {
 
   const printAlasan = useMemo(() =>
     (data) =>
-      data.reverse().map((user, index) => (
+      data.map((user, index) => (
         <li key={index}>
           <blockquote>
             <p>

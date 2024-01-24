@@ -137,11 +137,11 @@ function App() {
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
   const productionServerUrl = "https://lovely-tan-dove.cyclic.app";
 
-  const handleOnchange = (e) => {
+  const handleOnchange = useMemo(() => (e) => {
     dispatch(setFormValuesAction({ [e.target.name]: e.target.value }));
-  };
+  }, [dispatch]);
 
-  const handleLoginSubmit = async (e) => {
+  const handleLoginSubmit = useMemo(() => async (e) => {
     e.preventDefault();
     try {
       dispatch(setIsLoadingAction(true));
@@ -159,9 +159,9 @@ function App() {
     } finally {
       dispatch(setIsLoadingAction(false));
     }
-  };
+  }, [dispatch, formValues, setCookie]);
 
-  const handleSignUpSubmit = async (e) => {
+  const handleSignUpSubmit = useMemo(() => async (e) => {
     e.preventDefault();
     try {
       dispatch(setIsLoadingAction(true));
@@ -176,14 +176,14 @@ function App() {
     } finally {
       dispatch(setIsLoadingAction(false));
     }
-  };
+  }, [dispatch, formValues]);
 
-  const removeCookieToken = () => {
+  const removeCookieToken = useMemo(() => () => {
     removeCookie("token", { path: "/" });
     window.location.reload();
-  };
+  }, [removeCookie]);
 
-  const postData = async (endpoint, data) => {
+  const postData = useMemo(() => async (endpoint, data) => {
     const fullUrlString = `${productionServerUrl}/api${endpoint}`;
     try {
       const response = await axios.post(fullUrlString, data);
@@ -191,9 +191,9 @@ function App() {
     } catch (e) {
       return [];
     }
-  };
+  }, [productionServerUrl]);
 
-  const getData = async (endpoint) => {
+  const getData = useMemo(() => async (endpoint) => {
     const token = cookies.token;
     const fullUrlString = `${productionServerUrl}/api${endpoint}`;
 
@@ -208,7 +208,7 @@ function App() {
     } catch (e) {
       return [];
     }
-  };
+  }, [productionServerUrl, cookies.token]);
 
   useEffect(() => {
     const getAllUsersData = async () => {
@@ -222,7 +222,7 @@ function App() {
     };
 
     getAllUsersData();
-  }, []);
+  }, [getData, dispatch]);
 
   const contextValue = useMemo(() => ({
     dispatch,
@@ -249,11 +249,36 @@ function App() {
     users,
     setIsLoadingAction,
     isLoading,
-  }), [dispatch, isOpenUserAuth, isAuthorized, cookies, setCookie, formType, formValues, handleOnchange, handleLoginSubmit, getData, handleSignUpSubmit, removeCookieToken, userDetail, errors, postData, users, isLoading]);
+  }), [
+    dispatch,
+    setIsAuthorizedAction,
+    isOpenUserAuth,
+    isAuthorized,
+    cookies,
+    setCookie,
+    formType,
+    removeCookieToken,
+    handleLoginSubmit,
+    getData,
+    handleSignUpSubmit,
+    setFormTypeAction,
+    formValues,
+    setFormValuesAction,
+    handleOnchange,
+    setIsOpenUserAuthAction,
+    setUserDetailAction,
+    userDetail,
+    errors,
+    setErrorsAction,
+    postData,
+    users,
+    setIsLoadingAction,
+    isLoading,
+  ]);
 
   return (
     <>
-      <Suspense fallback={<span className="loader"></span>}>
+      <Suspense fallback={null}>
         <AppContext.Provider value={contextValue}>
           <div className="app-container">
             {isLoading ? <span className="loader"></span> : null}

@@ -227,6 +227,9 @@ select {
   width: 100%;
   margin-bottom: 0.8rem;
   box-sizing: border-box;
+  @media (width <= 458px) {
+    height: 25rem;
+  }
 }
 
 .app-container figure img {

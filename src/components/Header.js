@@ -18,21 +18,6 @@ function Header() {
   } = useContext(AppContext);
 
   const { nama } = userDetail;
-  const token = cookies.token;
-
-  useEffect(() => {
-    const checkIsUserAuthorized = async () => {
-      const data = await getData(`/isAuthorized/${token}`);
-
-      if (data.isAuthorized) {
-        dispatch(setIsAuthorizedAction(true));
-        dispatch(setIsOpenUserAuthAction(false));
-        dispatch(setUserDetailAction(data.userDetail));
-      }
-    };
-
-    checkIsUserAuthorized();
-  }, [isOpenUserAuth, isAuthorized, token, dispatch, setIsAuthorizedAction, setIsOpenUserAuthAction, setUserDetailAction]);
 
   const renderAuthorizedHeader = () => (
     <div>

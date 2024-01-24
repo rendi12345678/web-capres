@@ -224,6 +224,21 @@ function App() {
     getAllUsersData();
   }, [getData, dispatch]);
 
+  useEffect(() => {
+    const token = cookies.token;
+    const checkIsUserAuthorized = async () => {
+      const data = await getData(`/isAuthorized/${token}`);
+
+      if (data.isAuthorized) {
+        dispatch(setIsAuthorizedAction(true));
+        dispatch(setIsOpenUserAuthAction(false));
+        dispatch(setUserDetailAction(data.userDetail));
+      }
+    };
+
+    checkIsUserAuthorized();
+  }, []);
+
   const contextValue = useMemo(() => ({
     dispatch,
     setIsAuthorizedAction,

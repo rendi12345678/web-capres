@@ -222,10 +222,10 @@ function App() {
 
   const postData = useMemo(
     () => async (endpoint, data) => {
-      const fullUrlString = `${localServerUrl}/api${endpoint}`;
+      const fullUrlString = `${productionServerUrl}/api${endpoint}`;
       try {
         const response = await axios.post(fullUrlString, data);
-        console.log(response.data);
+        
         return response.data;
       } catch (e) {
         return [];
@@ -237,7 +237,7 @@ function App() {
   const getData = useMemo(
     () => async (endpoint) => {
       const token = cookies.token;
-      const fullUrlString = `${localServerUrl}/api${endpoint}`;
+      const fullUrlString = `${productionServerUrl}/api${endpoint}`;
 
       try {
         const response = await axios.get(fullUrlString, {
@@ -245,7 +245,7 @@ function App() {
             authorization: token,
           },
         });
-        console.log(response.data);
+        
         return response.data;
       } catch (e) {
         return [];

@@ -1,14 +1,29 @@
-import React, { useReducer, createContext, useEffect, useMemo, lazy, Suspense } from "react";
+import React, {
+  useReducer,
+  createContext,
+  useEffect,
+  useMemo,
+  lazy,
+  Suspense,
+} from "react";
 import "./App.css";
 import "./styles/reset.css";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 
-const MemoizedListCapres = React.memo(lazy(() => import("./components/ListCapres")));
+const MemoizedListCapres = React.memo(
+  lazy(() => import("./components/ListCapres"))
+);
 const MemoizedHeader = React.memo(lazy(() => import("./components/Header")));
-const MemoizedListSuara = React.memo(lazy(() => import("./components/ListSuara")));
-const MemoizedListAlasan = React.memo(lazy(() => import("./components/ListAlasan")));
-const MemoizedUserAuthentication = React.memo(lazy(() => import("./components/UserAuthentication")));
+const MemoizedListSuara = React.memo(
+  lazy(() => import("./components/ListSuara"))
+);
+const MemoizedListAlasan = React.memo(
+  lazy(() => import("./components/ListAlasan"))
+);
+const MemoizedUserAuthentication = React.memo(
+  lazy(() => import("./components/UserAuthentication"))
+);
 
 export const AppContext = createContext();
 
@@ -134,81 +149,110 @@ function App() {
     isLoading,
     users,
   } = state;
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "token",
+    "refreshToken",
+  ]);
   const productionServerUrl = "https://lovely-tan-dove.cyclic.app";
+  const localServerUrl = "http://localhost:5000";
 
-  const handleOnchange = useMemo(() => (e) => {
-    dispatch(setFormValuesAction({ [e.target.name]: e.target.value }));
-  }, [dispatch]);
+  const handleOnchange = useMemo(
+    () => (e) => {
+      dispatch(setFormValuesAction({ [e.target.name]: e.target.value }));
+    },
+    [dispatch]
+  );
 
-  const handleLoginSubmit = useMemo(() => async (e) => {
-    e.preventDefault();
-    try {
-      dispatch(setIsLoadingAction(true));
-      const data = await postData("/login", formValues);
+  const handleLoginSubmit = useMemo(
+    () => async (e) => {
+      e.preventDefault();
+      try {
+        dispatch(setIsLoadingAction(true));
+        const data = await postData("/login", formValues);
+        const expirationTime = new Date();
+        expirationTime.setSeconds(expirationTime.getSeconds() + 10);
 
-      if (data.success) {
-        setCookie("token", data.token, {
-          path: "/",
+        if (data.success) {
+          setCookie("token", data.token, {
+            path: "/",
+            expires: expirationTime,
+          });
+          setCookie("refreshToken", data.refreshToken, {
+            path: "/",
+          });
+          dispatch(setFormValuesAction({ nama: "", password: "" }));
+          window.location.reload();
+        } else {
+          dispatch(setErrorsAction(data.errors));
+        }
+      } finally {
+        dispatch(setIsLoadingAction(false));
+      }
+    },
+    [dispatch, formValues, setCookie]
+  );
+
+  const handleSignUpSubmit = useMemo(
+    () => async (e) => {
+      e.preventDefault();
+      try {
+        dispatch(setIsLoadingAction(true));
+        const data = await postData("/sign-up", formValues);
+
+        if (data.success) {
+          dispatch(setFormTypeAction(data.redirect));
+          dispatch(setFormValuesAction({ nama: "", password: "" }));
+        } else {
+          dispatch(setErrorsAction(data.errors));
+        }
+      } finally {
+        dispatch(setIsLoadingAction(false));
+      }
+    },
+    [dispatch, formValues]
+  );
+
+  const removeCookieToken = useMemo(
+    () => () => {
+      removeCookie("token", { path: "/" });
+      window.location.reload();
+    },
+    [removeCookie]
+  );
+
+  const postData = useMemo(
+    () => async (endpoint, data) => {
+      const fullUrlString = `${localServerUrl}/api${endpoint}`;
+      try {
+        const response = await axios.post(fullUrlString, data);
+        console.log(response.data);
+        return response.data;
+      } catch (e) {
+        return [];
+      }
+    },
+    []
+  );
+
+  const getData = useMemo(
+    () => async (endpoint) => {
+      const token = cookies.token;
+      const fullUrlString = `${localServerUrl}/api${endpoint}`;
+
+      try {
+        const response = await axios.get(fullUrlString, {
+          headers: {
+            authorization: token,
+          },
         });
-        dispatch(setFormValuesAction({ nama: "", password: "" }));
-        window.location.reload();
-      } else {
-        dispatch(setErrorsAction(data.errors));
+        console.log(response.data);
+        return response.data;
+      } catch (e) {
+        return [];
       }
-    } finally {
-      dispatch(setIsLoadingAction(false));
-    }
-  }, [dispatch, formValues, setCookie]);
-
-  const handleSignUpSubmit = useMemo(() => async (e) => {
-    e.preventDefault();
-    try {
-      dispatch(setIsLoadingAction(true));
-      const data = await postData("/sign-up", formValues);
-
-      if (data.success) {
-        dispatch(setFormTypeAction(data.redirect));
-        dispatch(setFormValuesAction({ nama: "", password: "" }));
-      } else {
-        dispatch(setErrorsAction(data.errors));
-      }
-    } finally {
-      dispatch(setIsLoadingAction(false));
-    }
-  }, [dispatch, formValues]);
-
-  const removeCookieToken = useMemo(() => () => {
-    removeCookie("token", { path: "/" });
-    window.location.reload();
-  }, [removeCookie]);
-
-  const postData = useMemo(() => async (endpoint, data) => {
-    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
-    try {
-      const response = await axios.post(fullUrlString, data);
-      return response.data;
-    } catch (e) {
-      return [];
-    }
-  }, [productionServerUrl]);
-
-  const getData = useMemo(() => async (endpoint) => {
-    const token = cookies.token;
-    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
-
-    try {
-      const response = await axios.get(fullUrlString, {
-        headers: {
-          authorization: token,
-        },
-      });
-
-      return response.data;
-    } catch (e) {
-      return [];
-    }
-  }, [productionServerUrl, cookies.token]);
+    },
+    [productionServerUrl, cookies.token]
+  );
 
   useEffect(() => {
     const getAllUsersData = async () => {
@@ -223,6 +267,25 @@ function App() {
 
     getAllUsersData();
   }, [getData, dispatch]);
+
+  const refreshToken = async () => {
+    const refreshToken = cookies.refreshToken;
+    const data = await postData("/token", { token: refreshToken });
+    const expirationTime = new Date();
+    expirationTime.setSeconds(expirationTime.getSeconds() + 10);
+
+    setCookie("token", data.token, {
+      path: "/",
+      expires: expirationTime,
+    });
+  };
+
+  useEffect(() => {
+    const token = cookies.token;
+    if (!token) {
+      refreshToken();
+    }
+  }, [cookies.token]);
 
   useEffect(() => {
     const token = cookies.token;
@@ -239,57 +302,60 @@ function App() {
     checkIsUserAuthorized();
   }, []);
 
-  const contextValue = useMemo(() => ({
-    dispatch,
-    setIsAuthorizedAction,
-    isOpenUserAuth,
-    isAuthorized,
-    cookies,
-    setCookie,
-    formType,
-    removeCookieToken,
-    handleLoginSubmit,
-    getData,
-    handleSignUpSubmit,
-    setFormTypeAction,
-    formValues,
-    setFormValuesAction,
-    handleOnchange,
-    setIsOpenUserAuthAction,
-    setUserDetailAction,
-    userDetail,
-    errors,
-    setErrorsAction,
-    postData,
-    users,
-    setIsLoadingAction,
-    isLoading,
-  }), [
-    dispatch,
-    setIsAuthorizedAction,
-    isOpenUserAuth,
-    isAuthorized,
-    cookies,
-    setCookie,
-    formType,
-    removeCookieToken,
-    handleLoginSubmit,
-    getData,
-    handleSignUpSubmit,
-    setFormTypeAction,
-    formValues,
-    setFormValuesAction,
-    handleOnchange,
-    setIsOpenUserAuthAction,
-    setUserDetailAction,
-    userDetail,
-    errors,
-    setErrorsAction,
-    postData,
-    users,
-    setIsLoadingAction,
-    isLoading,
-  ]);
+  const contextValue = useMemo(
+    () => ({
+      dispatch,
+      setIsAuthorizedAction,
+      isOpenUserAuth,
+      isAuthorized,
+      cookies,
+      setCookie,
+      formType,
+      removeCookieToken,
+      handleLoginSubmit,
+      getData,
+      handleSignUpSubmit,
+      setFormTypeAction,
+      formValues,
+      setFormValuesAction,
+      handleOnchange,
+      setIsOpenUserAuthAction,
+      setUserDetailAction,
+      userDetail,
+      errors,
+      setErrorsAction,
+      postData,
+      users,
+      setIsLoadingAction,
+      isLoading,
+    }),
+    [
+      dispatch,
+      setIsAuthorizedAction,
+      isOpenUserAuth,
+      isAuthorized,
+      cookies,
+      setCookie,
+      formType,
+      removeCookieToken,
+      handleLoginSubmit,
+      getData,
+      handleSignUpSubmit,
+      setFormTypeAction,
+      formValues,
+      setFormValuesAction,
+      handleOnchange,
+      setIsOpenUserAuthAction,
+      setUserDetailAction,
+      userDetail,
+      errors,
+      setErrorsAction,
+      postData,
+      users,
+      setIsLoadingAction,
+      isLoading,
+    ]
+  );
 
   return (
     <>

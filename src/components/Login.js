@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import Input from "./Input";
 import Button from "./Button";
 import { AppContext } from "../App";
-
 function Login() {
   const {
     handleOnchange,
@@ -57,4 +56,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default React.memo(Login);

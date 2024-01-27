@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { AppContext } from "../App";
 import Login from "./Login";
+import { AppContext } from "../App";
 import SignUp from "./SignUp";
 
 function UserAuthentication() {
@@ -19,4 +19,4 @@ function UserAuthentication() {
   );
 }
 
-export default UserAuthentication;
+export default React.memo(UserAuthentication);

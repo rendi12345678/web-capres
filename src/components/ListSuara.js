@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useMemo } from "react";
 import { AppContext } from "../App";
-
 function ListSuara() {
   const { users } = useContext(AppContext);
 
@@ -44,4 +43,4 @@ function ListSuara() {
   );
 }
 
-export default ListSuara;
+export default React.memo(ListSuara);

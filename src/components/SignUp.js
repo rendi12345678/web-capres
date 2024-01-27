@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import Input from "./Input";
 import Button from "./Button";
 import { AppContext } from "../App";
-
 function SignUp() {
   const {
     handleOnchange,
@@ -56,4 +55,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default React.memo(SignUp);

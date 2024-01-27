@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect, useMemo } from "react";
 import { AppContext } from "../App";
-
 function ListCapres() {
   const { postData, cookies, userDetail, isAuthorized } =
     useContext(AppContext);
@@ -94,4 +93,4 @@ function ListCapres() {
   );
 }
 
-export default ListCapres;
+export default React.memo(ListCapres);

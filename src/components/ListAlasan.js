@@ -1,6 +1,5 @@
 import React, { useContext, useMemo, useState } from "react";
 import { AppContext } from "../App";
-
 function ListAlasan() {
   const [category, setCategory] = useState("prabowo");
   const { users } = useContext(AppContext);
@@ -59,4 +58,4 @@ function ListAlasan() {
   );
 }
 
-export default ListAlasan;
+export default React.memo(ListAlasan);

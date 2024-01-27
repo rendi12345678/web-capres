@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { AppContext } from "../App";
-
 function Input({ type, name, value, placeholder, handleOnChange }) {
   const { errors } = useContext(AppContext);
 
@@ -29,4 +28,4 @@ function Input({ type, name, value, placeholder, handleOnChange }) {
   );
 }
 
-export default Input;
+export default React.memo(Input);

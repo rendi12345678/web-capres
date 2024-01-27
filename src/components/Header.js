@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { AppContext } from "../App";
 import Button from "./Button";
-
+import { AppContext } from "../App";
 function Header() {
   const {
     isAuthorized,
@@ -9,12 +8,6 @@ function Header() {
     dispatch,
     userDetail,
     removeCookieToken,
-    cookies,
-    getData,
-    setIsAuthorizedAction,
-    setIsOpenUserAuthAction,
-    setUserDetailAction,
-    isOpenUserAuth,
   } = useContext(AppContext);
 
   const { nama } = userDetail;
@@ -47,4 +40,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default React.memo(Header);

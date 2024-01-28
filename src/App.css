@@ -74,6 +74,7 @@ body {
   padding: 0.4rem 1rem;
   background: var(--accent-color);
   font-family: "Source Sans 3", sans-serif;
+  font-size: var(--body-text);
   font-weight: 900;
   border: 0;
   transition: 300ms ease-in-out;
@@ -384,7 +385,7 @@ select {
   position:fixed;
   width: 48px;
   height: 48px;
-  border: 5px solid #fff;
+  border: 5px solid var(--contrast-color);
   border-bottom-color: transparent;
   border-radius: 50%;
   display: block;

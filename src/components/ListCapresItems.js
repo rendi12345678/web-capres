@@ -8,6 +8,7 @@ function ListCapresItems() {
     postData,
     cookies,
     userDetail,
+    setAlasan,
     isAuthorized,
   } = useContext(AppContext);
 
@@ -54,10 +55,10 @@ function ListCapresItems() {
       });
 
       if (data.success) {
-        setId((currentId) => (currentId))
+        setAlasan(() => inputAlasan);
       }
     },
-    [capresId]
+    [capresId, isAuthorized]
   );
 
   const printListCapres = () =>

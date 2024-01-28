@@ -10,6 +10,8 @@ function ListSuara() {
       anies: 0,
     };
 
+    if (!users) return voteCounts;
+
     users.forEach(({ pilihanCapresId }) => {
       if (pilihanCapresId === "1") {
         voteCounts.prabowo += 1;

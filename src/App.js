@@ -33,7 +33,8 @@ const initialState = {
   },
   errors: [],
   users: [],
-  id: "1"
+  id: "1",
+  alasan: ""
 };
 
 const actionTypes = {
@@ -45,7 +46,8 @@ const actionTypes = {
   SET_ERRORS: "SET_ERRORS",
   SET_USERS: "SET_USERS",
   SET_IS_LOADING: "SET_IS_LOADING",
-  SET_ID: "SET_ID"
+  SET_ID: "SET_ID",
+  SET_ALASAN: "SET_ALASAN",
 };
 
 const reducer = (state, action) => {
@@ -69,6 +71,8 @@ const reducer = (state, action) => {
       };
     case actionTypes.SET_ID: 
       return {...state, id: action.payload}
+    case actionTypes.SET_ALASAN: 
+      return {...state, alasan: action.payload}
     case actionTypes.SET_ERRORS:
       return { ...state, errors: action.payload };
     case actionTypes.SET_IS_LOADING:
@@ -94,6 +98,11 @@ const setErrorsAction = (value) => ({
 
 const setIdAction = (value) => ({
   type: actionTypes.SET_ID,
+  payload: value,
+});
+
+const setAlasanAction = (value) => ({
+  type: actionTypes.SET_ALASAN,
   payload: value,
 });
 
@@ -132,7 +141,8 @@ function App() {
     errors,
     isLoading,
     users,
-    id
+    id,
+    alasan
   } = state;
   const [cookies, setCookie, removeCookie] = useCookies([
     "token",
@@ -145,6 +155,10 @@ function App() {
 
   const setId = value => {
     dispatch(setIdAction(value))
+  }
+
+  const setAlasan = value => {
+    dispatch(setAlasanAction(value))
   }
 
   const handleLoginSubmit = async (e) => {
@@ -247,7 +261,7 @@ function App() {
     };
 
     getAllUsersData();
-  }, [id]);
+  }, [id, alasan]);
 
   const refreshTokenValue = async () => {
     const refreshToken = cookies.refreshToken;
@@ -322,7 +336,9 @@ function App() {
     setIsLoadingAction,
     isLoading,
     id,
-    setId
+    setId,
+    setAlasan,
+    alasan
   };
 
   return (

@@ -11,11 +11,11 @@ import "./styles/reset.css";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 
-const MemoizedListCapres = lazy(() => import("./components/ListCapres"));
-const MemoizedHeader = lazy(() => import("./components/Header"));
-const MemoizedListSuara = lazy(() => import("./components/ListSuara"));
-const MemoizedListAlasan = lazy(() => import("./components/ListAlasan"));
-const MemoizedUserAuthentication = lazy(() =>
+const ListCapres = lazy(() => import("./components/ListCapres"));
+const Header = lazy(() => import("./components/Header"));
+const ListSuara = lazy(() => import("./components/ListSuara"));
+const ListAlasan = lazy(() => import("./components/ListAlasan"));
+const UserAuthentication = lazy(() =>
   import("./components/UserAuthentication")
 );
 
@@ -266,7 +266,7 @@ function App() {
     };
 
     checkIsUserAuthorized();
-  }, []);
+  }, [isAuthorized]);
 
   const contextValue = {
     dispatch,
@@ -300,13 +300,13 @@ function App() {
         <Suspense fallback={null}>
           <div className="app-container">
             {isLoading ? <span className="loader"></span> : null}
-            <MemoizedHeader />
+            <Header />
             <main>
-              <MemoizedListCapres />
-              <MemoizedListSuara />
-              <MemoizedListAlasan />
+              <ListCapres />
+              <ListSuara />
+              <ListAlasan />
             </main>
-            <MemoizedUserAuthentication />
+            <UserAuthentication />
           </div>
         </Suspense>
       </AppContext.Provider>

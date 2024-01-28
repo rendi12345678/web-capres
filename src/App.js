@@ -141,10 +141,14 @@ function App() {
         nama: namaRef.current.value,
         password: passwordRef.current.value,
       });
+
       const expirationTimeToken = new Date();
-    expirationTimeToken.setMinutes(expirationTimeToken.getMinutes + 10);
-    const expirationTimeRefreshToken = new Date();
-    expirationTimeToken.setDate(expirationTimeRefreshToken.getDate + 7);
+      expirationTimeToken.setMinutes(expirationTimeToken.getMinutes() + 10);
+
+      const expirationTimeRefreshToken = new Date();
+      expirationTimeRefreshToken.setDate(
+        expirationTimeRefreshToken.getDate() + 7
+      );
 
       if (data.success) {
         setCookie("token", data.token, {
@@ -153,7 +157,7 @@ function App() {
         });
         setCookie("refreshToken", data.refreshToken, {
           path: "/",
-          expires: expirationTimeRefreshToken
+          expires: expirationTimeRefreshToken,
         });
         window.location.reload();
       } else {
@@ -234,7 +238,7 @@ function App() {
     const refreshToken = cookies.refreshToken;
     const data = await postData("/token", { token: refreshToken });
     const expirationTimeToken = new Date();
-    expirationTimeToken.setMinutes(expirationTimeToken.getMinutes + 10);
+    expirationTimeToken.setMinutes(expirationTimeToken.getMinutes() + 10);
 
     setCookie("token", data.token, {
       path: "/",

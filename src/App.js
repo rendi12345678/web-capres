@@ -254,8 +254,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const token = cookies.token;
     const checkIsUserAuthorized = async () => {
+      const token = cookies.token;
       const data = await getData(`/isAuthorized/${token}`);
 
       if (data.isAuthorized) {

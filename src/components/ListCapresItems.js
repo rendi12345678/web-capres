@@ -2,13 +2,18 @@ import React, { useState, useContext, useEffect, useMemo } from "react";
 import { AppContext } from "../App";
 
 function ListCapresItems() {
-  const [capresId, setCapresId] = useState("0");
-  const { postData, cookies, userDetail, isAuthorized } =
-    useContext(AppContext);
+  const {
+    id: capresId,
+    setId,
+    postData,
+    cookies,
+    userDetail,
+    isAuthorized,
+  } = useContext(AppContext);
 
   useEffect(() => {
     if (userDetail.pilihanCapresId !== "") {
-      setCapresId(userDetail.pilihanCapresId);
+      setId(userDetail.pilihanCapresId);
     }
   }, [userDetail]);
 
@@ -42,17 +47,17 @@ function ListCapresItems() {
         return;
       }
 
-      setCapresId(id);
+      setId(id);
       const data = await postData(`/pilih-capres/${cookies.token}/${id}`, {
         pilihanCapresId: id,
         alasan: inputAlasan,
       });
 
       if (data.success) {
-        window.location.reload();
+        setId((currentId) => (currentId))
       }
     },
-    []
+    [capresId]
   );
 
   const printListCapres = () =>

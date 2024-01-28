@@ -33,6 +33,7 @@ const initialState = {
   },
   errors: [],
   users: [],
+  id: "1"
 };
 
 const actionTypes = {
@@ -44,6 +45,7 @@ const actionTypes = {
   SET_ERRORS: "SET_ERRORS",
   SET_USERS: "SET_USERS",
   SET_IS_LOADING: "SET_IS_LOADING",
+  SET_ID: "SET_ID"
 };
 
 const reducer = (state, action) => {
@@ -65,6 +67,8 @@ const reducer = (state, action) => {
         isOpenUserAuth: true,
         errors: [],
       };
+    case actionTypes.SET_ID: 
+      return {...state, id: action.payload}
     case actionTypes.SET_ERRORS:
       return { ...state, errors: action.payload };
     case actionTypes.SET_IS_LOADING:
@@ -85,6 +89,11 @@ const setIsAuthorizedAction = (value) => ({
 
 const setErrorsAction = (value) => ({
   type: actionTypes.SET_ERRORS,
+  payload: value,
+});
+
+const setIdAction = (value) => ({
+  type: actionTypes.SET_ID,
   payload: value,
 });
 
@@ -123,6 +132,7 @@ function App() {
     errors,
     isLoading,
     users,
+    id
   } = state;
   const [cookies, setCookie, removeCookie] = useCookies([
     "token",
@@ -132,6 +142,10 @@ function App() {
   const localServerUrl = "http://localhost:5000";
   const namaRef = useRef();
   const passwordRef = useRef();
+
+  const setId = value => {
+    dispatch(setIdAction(value))
+  }
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -159,7 +173,7 @@ function App() {
           path: "/",
           expires: expirationTimeRefreshToken,
         });
-        window.location.reload();
+        dispatch(setIsAuthorizedAction(true));
       } else {
         dispatch(setErrorsAction(data.errors));
       }
@@ -190,7 +204,6 @@ function App() {
   const removeCookieToken = () => {
     removeCookie("token", { path: "/" });
     removeCookie("refreshToken", { path: "/" });
-    window.location.reload();
   };
 
   const postData = async (endpoint, data) => {
@@ -225,17 +238,22 @@ function App() {
     const getAllUsersData = async () => {
       try {
         const data = await getData("/users");
-        dispatch(setUsersAction(data.users.reverse()));
+
+        if (!data) return;
+        dispatch(setUsersAction(data.users));
       } catch (err) {
-        console.log(err);
+        dispatch(setUsersAction([]));
       }
     };
 
     getAllUsersData();
-  }, []);
+  }, [id]);
 
-  const refreshToken = async () => {
+  const refreshTokenValue = async () => {
     const refreshToken = cookies.refreshToken;
+
+    if (!refreshToken) return;
+
     const data = await postData("/token", { token: refreshToken });
     const expirationTimeToken = new Date();
     expirationTimeToken.setMinutes(expirationTimeToken.getMinutes() + 10);
@@ -248,25 +266,36 @@ function App() {
 
   useEffect(() => {
     const token = cookies.token;
-    if (!token) {
-      refreshToken();
-    }
-  }, []);
+    const refreshToken = cookies.refreshToken;
+    if (!token && !refreshToken) return;
+    if (!refreshToken) return;
+    if (!token && refreshToken) refreshTokenValue();
+  }, [cookies.token, cookies.refreshToken]);
 
   useEffect(() => {
     const checkIsUserAuthorized = async () => {
       const token = cookies.token;
-      const data = await getData(`/isAuthorized/${token}`);
+      if (!token) {
+        dispatch(setIsAuthorizedAction(false));
+        return;
+      }
 
-      if (data.isAuthorized) {
+      try {
+        const data = await getData(`/isAuthorized/${token}`);
+        if (data.isAuthorized) {
+          dispatch(setIsAuthorizedAction(true));
+          dispatch(setIsOpenUserAuthAction(false));
+          dispatch(setUserDetailAction(data.userDetail));
+        } else {
+          dispatch(setIsAuthorizedAction(false));
+        }
+      } catch (err) {
         dispatch(setIsAuthorizedAction(true));
-        dispatch(setIsOpenUserAuthAction(false));
-        dispatch(setUserDetailAction(data.userDetail));
       }
     };
 
     checkIsUserAuthorized();
-  }, [isAuthorized]);
+  }, [cookies.token]);
 
   const contextValue = {
     dispatch,
@@ -292,6 +321,8 @@ function App() {
     users,
     setIsLoadingAction,
     isLoading,
+    id,
+    setId
   };
 
   return (

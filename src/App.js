@@ -142,7 +142,7 @@ function App() {
         password: passwordRef.current.value,
       });
       const expirationTimeToken = new Date();
-    expirationTimeToken.setDate(expirationTimeToken.getMinutes + 10);
+    expirationTimeToken.setMinutes(expirationTimeToken.getMinutes + 10);
     const expirationTimeRefreshToken = new Date();
     expirationTimeToken.setDate(expirationTimeRefreshToken.getDate + 7);
 
@@ -234,7 +234,7 @@ function App() {
     const refreshToken = cookies.refreshToken;
     const data = await postData("/token", { token: refreshToken });
     const expirationTimeToken = new Date();
-    expirationTimeToken.setDate(expirationTimeToken.getMinutes + 10);
+    expirationTimeToken.setMinutes(expirationTimeToken.getMinutes + 10);
 
     setCookie("token", data.token, {
       path: "/",

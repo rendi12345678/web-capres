@@ -33,7 +33,7 @@ function Header() {
   return (
     <header>
       <h1>
-        Pemilu Online <span>Capres</span>
+        Hiburan <span>Pilpres</span>
       </h1>
       {isAuthorized ? renderAuthorizedHeader() : renderUnauthorizedHeader()}
     </header>

@@ -13,7 +13,7 @@ function ListAlasan() {
   const filteredAlasan = useMemo(() => {
     if (!users) return [];
     return users.filter((user) => user.pilihanCapresId === category);
-  }, [users]);
+  }, [users, category]);
 
   const printAlasan = useMemo(
     () => (data) =>

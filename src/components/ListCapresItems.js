@@ -42,7 +42,10 @@ function ListCapresItems() {
   const pilihCapres = useMemo(
     () => async (id) => {
       if (!isAuthorized) return alert("Silahkan login dulu!");
-      const inputAlasan = window.prompt("Masukkan alasan memilih :");
+
+      const inputAlasan = window.prompt(
+        `Masukkan alasan memilih ${listCapres.find((capres) => capres.id === id).namaPresiden} :`
+      );
 
       if (inputAlasan === null) {
         return;

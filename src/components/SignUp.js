@@ -4,14 +4,13 @@ import Button from "./Button";
 import { AppContext } from "../App";
 function SignUp() {
   const {
-    handleOnchange,
     dispatch,
-    formValues,
+    namaRef,
+    passwordRef,
     setFormTypeAction,
     setIsOpenUserAuthAction,
-    handleSignUpSubmit
+    handleSignUpSubmit,
   } = useContext(AppContext);
-  const { name, password } = formValues;
 
   return (
     <>
@@ -19,17 +18,15 @@ function SignUp() {
       <form onSubmit={handleSignUpSubmit}>
         <Input
           type="text"
-          value={name}
-          handleOnChange={handleOnchange}
+          ref={namaRef}
           name="nama"
           placeholder="Masukkan nama anda!"
         />
         <Input
           type="password"
-          value={password}
-          handleOnChange={handleOnchange}
+          ref={passwordRef}
           name="password"
-          placeholder="Masukkan password amda!"
+          placeholder="Masukkan password anda!"
         />
         <div>
           <Button

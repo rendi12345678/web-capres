@@ -2,9 +2,9 @@ import React, {
   useReducer,
   createContext,
   useEffect,
-  useMemo,
   lazy,
   Suspense,
+  useRef,
 } from "react";
 import "./App.css";
 import "./styles/reset.css";
@@ -25,10 +25,6 @@ const initialState = {
   isAuthorized: false,
   isLoading: false,
   formType: "login",
-  formValues: {
-    nama: "",
-    password: "",
-  },
   isOpenUserAuth: false,
   userDetail: {
     nama: "",
@@ -42,7 +38,6 @@ const initialState = {
 const actionTypes = {
   SET_IS_AUTHORIZED: "SET_IS_AUTHORIZED",
   SET_FORM_TYPE: "SET_FORM_TYPE",
-  SET_FORM_VALUES: "SET_FORM_VALUES",
   SET_IS_OPEN_USER_AUTH: "SET_IS_OPEN_USER_AUTH",
   HANDLE_LOGIN_SUBMIT: "HANDLE_LOGIN_SUBMIT",
   SET_USER_DETAIL: "SET_USER_DETAIL",
@@ -74,14 +69,6 @@ const reducer = (state, action) => {
       return { ...state, errors: action.payload };
     case actionTypes.SET_IS_LOADING:
       return { ...state, isLoading: action.payload };
-    case actionTypes.SET_FORM_VALUES:
-      return {
-        ...state,
-        formValues: {
-          ...state.formValues,
-          ...action.payload,
-        },
-      };
     case actionTypes.SET_USERS:
       return { ...state, users: action.payload };
     case actionTypes.SET_IS_OPEN_USER_AUTH:
@@ -116,11 +103,6 @@ const setFormTypeAction = (value) => ({
   payload: value,
 });
 
-const setFormValuesAction = (value) => ({
-  type: actionTypes.SET_FORM_VALUES,
-  payload: value,
-});
-
 const setUserDetailAction = (value) => ({
   type: actionTypes.SET_USER_DETAIL,
   payload: value,
@@ -136,7 +118,6 @@ function App() {
   const {
     isAuthorized,
     formType,
-    formValues,
     isOpenUserAuth,
     userDetail,
     errors,
@@ -149,28 +130,31 @@ function App() {
   ]);
   const productionServerUrl = "https://lovely-tan-dove.cyclic.app";
   const localServerUrl = "http://localhost:5000";
-
-  const handleOnchange = (e) => {
-    dispatch(setFormValuesAction({ [e.target.name]: e.target.value }));
-  };
+  const namaRef = useRef();
+  const passwordRef = useRef();
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
       dispatch(setIsLoadingAction(true));
-      const data = await postData("/login", formValues);
-      const expirationTime = new Date();
-      expirationTime.setSeconds(expirationTime.getSeconds() + 10);
+      const data = await postData("/login", {
+        nama: namaRef.current.value,
+        password: passwordRef.current.value,
+      });
+      const expirationTimeToken = new Date();
+    expirationTimeToken.setDate(expirationTimeToken.getMinutes + 10);
+    const expirationTimeRefreshToken = new Date();
+    expirationTimeToken.setDate(expirationTimeRefreshToken.getDate + 7);
 
       if (data.success) {
         setCookie("token", data.token, {
           path: "/",
-          expires: expirationTime,
+          expires: expirationTimeToken,
         });
         setCookie("refreshToken", data.refreshToken, {
           path: "/",
+          expires: expirationTimeRefreshToken
         });
-        dispatch(setFormValuesAction({ nama: "", password: "" }));
         window.location.reload();
       } else {
         dispatch(setErrorsAction(data.errors));
@@ -184,11 +168,13 @@ function App() {
     e.preventDefault();
     try {
       dispatch(setIsLoadingAction(true));
-      const data = await postData("/sign-up", formValues);
+      const data = await postData("/sign-up", {
+        nama: namaRef.current.value,
+        password: passwordRef.current.value,
+      });
 
       if (data.success) {
         dispatch(setFormTypeAction(data.redirect));
-        dispatch(setFormValuesAction({ nama: "", password: "" }));
       } else {
         dispatch(setErrorsAction(data.errors));
       }
@@ -204,7 +190,7 @@ function App() {
   };
 
   const postData = async (endpoint, data) => {
-    const fullUrlString = `${localServerUrl}/api${endpoint}`;
+    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
     try {
       const response = await axios.post(fullUrlString, data);
 
@@ -216,7 +202,7 @@ function App() {
 
   const getData = async (endpoint) => {
     const token = cookies.token;
-    const fullUrlString = `${localServerUrl}/api${endpoint}`;
+    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
 
     try {
       const response = await axios.get(fullUrlString, {
@@ -247,12 +233,12 @@ function App() {
   const refreshToken = async () => {
     const refreshToken = cookies.refreshToken;
     const data = await postData("/token", { token: refreshToken });
-    const expirationTime = new Date();
-    expirationTime.setSeconds(expirationTime.getSeconds() + 10);
+    const expirationTimeToken = new Date();
+    expirationTimeToken.setDate(expirationTimeToken.getMinutes + 10);
 
     setCookie("token", data.token, {
       path: "/",
-      expires: expirationTime,
+      expires: expirationTimeToken,
     });
   };
 
@@ -291,9 +277,8 @@ function App() {
     getData,
     handleSignUpSubmit,
     setFormTypeAction,
-    formValues,
-    setFormValuesAction,
-    handleOnchange,
+    namaRef,
+    passwordRef,
     setIsOpenUserAuthAction,
     setUserDetailAction,
     userDetail,

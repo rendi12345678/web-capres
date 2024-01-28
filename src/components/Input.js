@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
 import { AppContext } from "../App";
-function Input({ type, name, value, placeholder, handleOnChange }) {
+const Input = React.forwardRef((props, ref) => {
   const { errors } = useContext(AppContext);
+  const { name, type, placeholder } = props;
 
   return (
     <label htmlFor={name}>
       {name} <br />
       <input
+        ref={ref}
         type={type}
         id={name}
-        value={value}
         name={name}
-        onChange={handleOnChange}
         placeholder={placeholder}
       />{" "}
       <br />
@@ -26,6 +26,6 @@ function Input({ type, name, value, placeholder, handleOnChange }) {
         )}
     </label>
   );
-}
+});
 
 export default React.memo(Input);

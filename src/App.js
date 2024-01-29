@@ -33,7 +33,7 @@ const initialState = {
   },
   errors: [],
   users: [],
-  id: "1",
+  id: "",
   alasan: ""
 };
 

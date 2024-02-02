@@ -402,3 +402,17 @@ select {
     transform: rotate(360deg);
   }
 }
+
+.search-title {
+  margin-top: 2rem;
+  display: inline-block;
+  margin-right: 2rem;
+}
+
+.search-title + input {
+  margin-top: 2rem;
+  display: inline-block;
+  max-width: 35rem;
+  background: transparent;
+  border: .1rem solid var(--body-color);
+}

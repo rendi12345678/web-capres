@@ -249,18 +249,18 @@ function App() {
   };
 
   useEffect(() => {
-    const getAllUsersData = async () => {
+    const setAllUsersData = async () => {
       try {
-        const data = await getData("/users");
-
-        if (!data) return;
-        dispatch(setUsersAction(data.users));
+        const userData = await getData("/users");
+        if (!userData) return;
+        dispatch(setUsersAction(userData.users));
       } catch (err) {
         dispatch(setUsersAction([]));
       }
     };
 
-    getAllUsersData();
+    setAllUsersData()
+    
   }, [id, alasan]);
 
   const refreshTokenValue = async () => {

@@ -1,9 +1,11 @@
 import React, { useContext, useMemo, useState, lazy, Suspense } from "react";
 import { AppContext } from "../App";
+import SearchBar from "./SearchBar";
 const ListItem = lazy(() => import("./ListItem"));
 
 function ListAlasan() {
   const [category, setCategory] = useState("1");
+  const [query, setQuery] = useState("");
   const { users } = useContext(AppContext);
 
   const handleCategoryChange = (e) => {
@@ -12,17 +14,26 @@ function ListAlasan() {
 
   const filteredAlasan = useMemo(() => {
     if (!users) return [];
-    return users.filter((user) => user.pilihanCapresId === category);
-  }, [users, category]);
+    const regex = new RegExp(query, 'i');
+    return users.filter(
+      (user) =>
+        user.pilihanCapresId === category &&
+        regex.test(user.nama.toLowerCase())
+    );
+  }, [users, category, query]);
 
   const printAlasan = useMemo(
-    () => (data) =>
-      data.map((user, index) => (
+    () => (filteredData) => {
+      let dataToPrinted = filteredData.map((user, index) => (
         <Suspense fallback={null} key={index + 1}>
-          <ListItem user={user}/>
+          <ListItem user={user} />
         </Suspense>
-      )),
-    []
+      ));
+
+      if (dataToPrinted.length === 0) return <p>Belum ada komentar!</p>;
+      return dataToPrinted;
+    },
+    [query]
   );
 
   return (
@@ -40,6 +51,7 @@ function ListAlasan() {
           <option value="3">Anies</option>
         </select>
       </h3>
+      <SearchBar query={query} setQuery={setQuery} />
       <ul>{users ? printAlasan(filteredAlasan) : null}</ul>
     </section>
   );

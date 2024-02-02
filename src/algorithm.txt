@@ -1,8 +1,9 @@
-Pilih Capres
+Algoritma Pilih Capres
+
 1. jika gambar di klik maka ambil id gambar dan kirim ke server dengan token nya
 2. lalu di server update data alasan dan capres id dari user dengan token yg telah diberikan
 3. lalu ambil data user yg baru 
 4. loop data semua user jika id 1 maka jumlah user yg milih prabowo meningkat dan seterusnya
-5. loop data semua user dan tampilakan setiap alasan yg dimiliki setiap user
+5. loop data semua user dan tampilkan setiap alasan yg dimiliki setiap user
 
 keterangan : jika user memilih capres dan belum login suruh login dulu

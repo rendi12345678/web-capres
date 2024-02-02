@@ -1,21 +1,21 @@
 import React, { useContext } from "react";
-import Input from "./Input";
-import Button from "./Button";
-import { AppContext } from "../App";
-function Login() {
+import Input from "../../Input";
+import Button from "../../Button";
+import { AppContext } from "../../../App";
+function SignUp() {
   const {
     dispatch,
     namaRef,
     passwordRef,
     setFormTypeAction,
     setIsOpenUserAuthAction,
-    handleLoginSubmit,
+    handleSignUpSubmit,
   } = useContext(AppContext);
 
   return (
     <>
-      <h1>Masuk</h1>
-      <form onSubmit={handleLoginSubmit}>
+      <h1>Daftar</h1>
+      <form onSubmit={handleSignUpSubmit}>
         <Input
           type="text"
           ref={namaRef}
@@ -36,14 +36,15 @@ function Login() {
           >
             Keluar
           </Button>
-          <Button type="submit">
-            Masuk
-          </Button>
+          <Button type="submit">Daftar</Button>
         </div>
         <p>
-          <span>Belum punya akun?</span>{" "}
-          <Button className="change-form-type-btn" handleClick={() => dispatch(setFormTypeAction("/sign up"))}>
-            Daftar
+          <span>Sudah punya akun?</span>{" "}
+          <Button
+            className="change-form-type-btn"
+            handleClick={() => dispatch(setFormTypeAction("/login"))}
+          >
+            Masuk
           </Button>
         </p>
       </form>
@@ -51,4 +52,4 @@ function Login() {
   );
 }
 
-export default React.memo(Login);
+export default React.memo(SignUp);

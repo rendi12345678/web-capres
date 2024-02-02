@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState, lazy, Suspense } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "../../App";
 import SearchBar from "./SearchBar";
-const ListItem = lazy(() => import("./ListItem"));
+const ListItem = lazy(() => import("./ListItem.js"));
 
 function ListAlasan() {
   const [category, setCategory] = useState("1");

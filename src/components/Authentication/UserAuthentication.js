@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import Login from "./Login";
-import { AppContext } from "../App";
-import SignUp from "./SignUp";
+import Login from "./Login/Login";
+import { AppContext } from "../../App";
+import SignUp from "./SignUp/SignUp";
 
 function UserAuthentication() {
   const { formType, isOpenUserAuth } =

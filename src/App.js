@@ -11,12 +11,12 @@ import "./styles/reset.css";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 
-const ListCapres = lazy(() => import("./components/ListCapres"));
+const ListCapres = lazy(() => import("./components/ListCapres/ListCapres"));
 const Header = lazy(() => import("./components/Header"));
-const ListSuara = lazy(() => import("./components/ListSuara"));
-const ListAlasan = lazy(() => import("./components/ListAlasan"));
+const ListSuara = lazy(() => import("./components/ListSuara/ListSuara"));
+const ListAlasan = lazy(() => import("./components/ListAlasan/ListAlasan"));
 const UserAuthentication = lazy(() =>
-  import("./components/UserAuthentication")
+  import("./components/Authentication/UserAuthentication")
 );
 
 export const AppContext = createContext(null);
@@ -34,7 +34,7 @@ const initialState = {
   errors: [],
   users: [],
   id: "",
-  alasan: ""
+  alasan: "",
 };
 
 const actionTypes = {
@@ -69,10 +69,10 @@ const reducer = (state, action) => {
         isOpenUserAuth: true,
         errors: [],
       };
-    case actionTypes.SET_ID: 
-      return {...state, id: action.payload}
-    case actionTypes.SET_ALASAN: 
-      return {...state, alasan: action.payload}
+    case actionTypes.SET_ID:
+      return { ...state, id: action.payload };
+    case actionTypes.SET_ALASAN:
+      return { ...state, alasan: action.payload };
     case actionTypes.SET_ERRORS:
       return { ...state, errors: action.payload };
     case actionTypes.SET_IS_LOADING:
@@ -142,7 +142,7 @@ function App() {
     isLoading,
     users,
     id,
-    alasan
+    alasan,
   } = state;
   const [cookies, setCookie, removeCookie] = useCookies([
     "token",
@@ -153,13 +153,13 @@ function App() {
   const namaRef = useRef();
   const passwordRef = useRef();
 
-  const setId = value => {
-    dispatch(setIdAction(value))
-  }
+  const setId = (value) => {
+    dispatch(setIdAction(value));
+  };
 
-  const setAlasan = value => {
-    dispatch(setAlasanAction(value))
-  }
+  const setAlasan = (value) => {
+    dispatch(setAlasanAction(value));
+  };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -259,8 +259,7 @@ function App() {
       }
     };
 
-    setAllUsersData()
-    
+    setAllUsersData();
   }, [id, alasan]);
 
   const refreshTokenValue = async () => {
@@ -338,7 +337,7 @@ function App() {
     id,
     setId,
     setAlasan,
-    alasan
+    alasan,
   };
 
   return (

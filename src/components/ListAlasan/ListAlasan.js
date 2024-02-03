@@ -1,4 +1,11 @@
-import React, { useContext, useMemo, useState, lazy, Suspense } from "react";
+import React, {
+  Suspense,
+  lazy,
+  useContext,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import { AppContext } from "../../App";
 import SearchBar from "./SearchBar";
 const ListItem = lazy(() => import("./ListItem.js"));
@@ -7,6 +14,7 @@ function ListAlasan() {
   const [category, setCategory] = useState("1");
   const [query, setQuery] = useState("");
   const { users } = useContext(AppContext);
+  const [isLoading, startTransition] = useTransition();
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
@@ -14,11 +22,10 @@ function ListAlasan() {
 
   const filteredAlasan = useMemo(() => {
     if (!users) return [];
-    const regex = new RegExp(query, 'i');
+    const regex = new RegExp(query, "i");
     return users.filter(
       (user) =>
-        user.pilihanCapresId === category &&
-        regex.test(user.nama.toLowerCase())
+        user.pilihanCapresId === category && regex.test(user.nama.toLowerCase())
     );
   }, [users, category, query]);
 
@@ -43,7 +50,9 @@ function ListAlasan() {
         <select
           name="capres"
           id="capres"
-          onChange={handleCategoryChange}
+          onChange={() => {
+            startTransition(() => handleCategoryChange);
+          }}
           value={category}
         >
           <option value="1">Prabowo</option>

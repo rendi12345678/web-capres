@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-import Login from "./Login/Login";
 import { AppContext } from "../../App";
-import SignUp from "./SignUp/SignUp";
+import { Login, SignUp } from "../lazyLoadComponents";
 
 function UserAuthentication() {
   const { formType, isOpenUserAuth } =

@@ -1,23 +1,16 @@
+import axios from "axios";
 import React, {
-  useReducer,
+  Suspense,
   createContext,
   useEffect,
-  lazy,
-  Suspense,
+  useReducer,
   useRef,
+  useTransition
 } from "react";
-import "./App.css";
-import "./styles/reset.css";
 import { useCookies } from "react-cookie";
-import axios from "axios";
-
-const ListCapres = lazy(() => import("./components/ListCapres/ListCapres"));
-const Header = lazy(() => import("./components/Header"));
-const ListSuara = lazy(() => import("./components/ListSuara/ListSuara"));
-const ListAlasan = lazy(() => import("./components/ListAlasan/ListAlasan"));
-const UserAuthentication = lazy(() =>
-  import("./components/Authentication/UserAuthentication")
-);
+import "./App.css";
+import { Header, ListAlasan, ListCapres, ListSuara, UserAuthentication } from "./components/lazyLoadComponents.js";
+import "./styles/reset.css";
 
 export const AppContext = createContext(null);
 
@@ -152,6 +145,7 @@ function App() {
   const localServerUrl = "http://localhost:5000";
   const namaRef = useRef();
   const passwordRef = useRef();
+  const {isPending, startTransition} = useTransition()
 
   const setId = (value) => {
     dispatch(setIdAction(value));
@@ -349,8 +343,8 @@ function App() {
             <Header />
             <main>
               <ListCapres />
-              <ListSuara />
-              <ListAlasan />
+              <ListSuara /> 
+              <ListAlasan /> 
             </main>
             <UserAuthentication />
           </div>

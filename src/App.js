@@ -212,6 +212,7 @@ function App() {
   const removeCookieToken = () => {
     removeCookie("token", { path: "/" });
     removeCookie("refreshToken", { path: "/" });
+    setId("")
   };
 
   const postData = async (endpoint, data) => {

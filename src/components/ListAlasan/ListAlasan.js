@@ -27,7 +27,7 @@ function ListAlasan() {
       (user) =>
         user.pilihanCapresId === category && regex.test(user.nama.toLowerCase())
     );
-  }, [users, category, query]);
+  }, [users.length, category, query]);
 
   const printAlasan = useMemo(
     () => (filteredData) => {
@@ -40,7 +40,7 @@ function ListAlasan() {
       if (dataToPrinted.length === 0) return <p>Belum ada komentar!</p>;
       return dataToPrinted;
     },
-    [query]
+    [query, category]
   );
 
   return (
@@ -50,9 +50,7 @@ function ListAlasan() {
         <select
           name="capres"
           id="capres"
-          onChange={() => {
-            startTransition(() => handleCategoryChange);
-          }}
+          onChange={handleCategoryChange}
           value={category}
         >
           <option value="1">Prabowo</option>

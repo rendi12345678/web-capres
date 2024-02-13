@@ -10,14 +10,20 @@ function ListAlasan() {
   const { getData, id, alasan } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const setAllUsersData = async () => {
-      const userData = await getData("/users");
+      setIsLoading(true);
+      try {
+        const userData = await getData("/users");
 
-      if (userData.length) return setIsError(true);
-      setUsers(userData.users);
-      setIsError(false);
+        if (userData.length) return setIsError(true);
+        setUsers(userData.users);
+        setIsError(false);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     setAllUsersData();
@@ -52,7 +58,7 @@ function ListAlasan() {
         </select>
       </h3>
       <SearchBar query={query} setQuery={setQuery} />
-      <ListItem users={filteredUsers} isError={isError} />
+      <ListItem users={filteredUsers} isError={isError} isLoading={isLoading} />
     </section>
   );
 }

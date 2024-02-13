@@ -5,11 +5,18 @@ import React, {
   useEffect,
   useReducer,
   useRef,
-  useTransition
+  useTransition,
 } from "react";
 import { useCookies } from "react-cookie";
+import { SkeletonTheme } from "react-loading-skeleton";
 import "./App.css";
-import { Header, ListAlasan, ListCapres, ListSuara, UserAuthentication } from "./components/lazyLoadComponents.js";
+import {
+  Header,
+  ListAlasan,
+  ListCapres,
+  ListSuara,
+  UserAuthentication,
+} from "./components/lazyLoadComponents.js";
 import "./styles/reset.css";
 
 export const AppContext = createContext(null);
@@ -145,7 +152,7 @@ function App() {
   const localServerUrl = "http://localhost:5000";
   const namaRef = useRef();
   const passwordRef = useRef();
-  const {isPending, startTransition} = useTransition()
+  const { isPending, startTransition } = useTransition();
 
   const setId = (value) => {
     dispatch(setIdAction(value));
@@ -212,7 +219,7 @@ function App() {
   const removeCookieToken = () => {
     removeCookie("token", { path: "/" });
     removeCookie("refreshToken", { path: "/" });
-    setId("")
+    setId("");
   };
 
   const postData = async (endpoint, data) => {
@@ -338,18 +345,20 @@ function App() {
   return (
     <>
       <AppContext.Provider value={contextValue}>
-        <Suspense fallback={null}>
-          <div className="app-container">
-            {isLoading ? <span className="loader"></span> : null}
-            <Header />
-            <main>
-              <ListCapres />
-              <ListSuara /> 
-              <ListAlasan /> 
-            </main>
-            <UserAuthentication />
-          </div>
-        </Suspense>
+        <SkeletonTheme baseColor="var(--secondary-color)" highlightColor="#444">
+          <Suspense fallback={null}>
+            <div className="app-container">
+              {isLoading ? <span className="loader"></span> : null}
+              <Header />
+              <main>
+                <ListCapres />
+                <ListSuara />
+                <ListAlasan />
+              </main>
+              <UserAuthentication />
+            </div>
+          </Suspense>
+        </SkeletonTheme>
       </AppContext.Provider>
     </>
   );

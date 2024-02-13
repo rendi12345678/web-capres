@@ -1,11 +1,5 @@
-import React, {
-  Suspense,
-  lazy,
-  useContext,
-  useMemo,
-  useState,
-  useTransition,
-} from "react";
+import React, { lazy, useContext, useEffect, useMemo, useState } from "react";
+import "react-loading-skeleton/dist/skeleton.css";
 import { AppContext } from "../../App";
 import SearchBar from "./SearchBar";
 const ListItem = lazy(() => import("./ListItem.js"));
@@ -13,35 +7,34 @@ const ListItem = lazy(() => import("./ListItem.js"));
 function ListAlasan() {
   const [category, setCategory] = useState("1");
   const [query, setQuery] = useState("");
-  const { users } = useContext(AppContext);
-  const [isLoading, startTransition] = useTransition();
+  const { getData, id, alasan } = useContext(AppContext);
+  const [users, setUsers] = useState([]);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const setAllUsersData = async () => {
+      const userData = await getData("/users");
+
+      if (userData.length) return setIsError(true);
+      setUsers(userData.users);
+      setIsError(false);
+    };
+
+    setAllUsersData();
+  }, [id, alasan]);
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
   };
 
-  const filteredAlasan = useMemo(() => {
+  const filteredUsers = useMemo(() => {
     if (!users) return [];
     const regex = new RegExp(query, "i");
     return users.filter(
       (user) =>
         user.pilihanCapresId === category && regex.test(user.nama.toLowerCase())
     );
-  }, [users.length, category, query]);
-
-  const printAlasan = useMemo(
-    () => (filteredData) => {
-      let dataToPrinted = filteredData.map((user, index) => (
-        <Suspense fallback={null} key={index + 1}>
-          <ListItem user={user} />
-        </Suspense>
-      ));
-
-      if (dataToPrinted.length === 0) return <p>Belum ada komentar!</p>;
-      return dataToPrinted;
-    },
-    [query, category]
-  );
+  }, [category, query, users.length]);
 
   return (
     <section className="list-alasan">
@@ -59,7 +52,7 @@ function ListAlasan() {
         </select>
       </h3>
       <SearchBar query={query} setQuery={setQuery} />
-      <ul>{users ? printAlasan(filteredAlasan) : null}</ul>
+      <ListItem users={filteredUsers} isError={isError} />
     </section>
   );
 }

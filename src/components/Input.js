@@ -15,7 +15,7 @@ const Input = React.forwardRef((props, ref) => {
         placeholder={placeholder}
       />{" "}
       <br />
-      {errors.length !== 0 &&
+      {errors &&
         errors.map(
           ({ path, msg }, index) =>
             path === name && (

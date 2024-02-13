@@ -1,9 +1,14 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useState } from "react";
+import "react-loading-skeleton/dist/skeleton.css";
+
+import Skeleton from "react-loading-skeleton";
 import { AppContext } from "../../App";
 function ListSuara() {
   const { users } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const jumlahPemilihanCapres = useMemo(() => {
+    setIsLoading(() => true);
     const voteCounts = {
       prabowo: 0,
       ganjar: 0,
@@ -22,6 +27,7 @@ function ListSuara() {
       }
     });
 
+    setIsLoading(() => false);
     return voteCounts;
   }, [users]);
 
@@ -32,13 +38,13 @@ function ListSuara() {
       <h3>Hasil semua suara</h3>
       <ul>
         <li>
-          <h5>Prabowo : {prabowo}</h5>
+          <h5>{prabowo ? `Prabowo ${prabowo}` : <Skeleton />}</h5>
         </li>
         <li>
-          <h5>Ganjar : {ganjar}</h5>
+          <h5>{ganjar ? `Ganjar ${ganjar}` : <Skeleton />}</h5>
         </li>
         <li>
-          <h5>Anies : {anies}</h5>
+          <h5>{anies ? `Anies ${anies}` : <Skeleton />}</h5>
         </li>
       </ul>
     </section>

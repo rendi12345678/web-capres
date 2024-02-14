@@ -258,7 +258,8 @@ select {
   text-align: center;
   width: 100%;
   display: grid;
-  padding: 1rem 3rem;
+  align-items: center;
+  height: 4rem;
   row-gap: 1rem;
 }
 
@@ -377,12 +378,12 @@ select {
 
 /* Loading Animation */
 .loader {
-  margin:auto;
-  left:0;
-  right:0;
-  top:0;
-  bottom:0;
-  position:fixed;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: fixed;
   width: 48px;
   height: 48px;
   border: 5px solid var(--contrast-color);
@@ -414,5 +415,5 @@ select {
   display: inline-block;
   max-width: 35rem;
   background: transparent;
-  border: .1rem solid var(--body-color);
+  border: 0.1rem solid var(--body-color);
 }

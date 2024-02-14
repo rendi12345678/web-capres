@@ -21,9 +21,16 @@ function ListItem({ users, isError, isLoading }) {
     <p style={{ color: "red", marginTop: "1rem" }}>Something went wrong!</p>
   );
 
-  const renderSkeleton = () => (
-    <Skeleton count={5} style={{ marginTop: "1rem" }} />
-  );
+  const renderListAlasanSkeleton = () =>
+    Array(8)
+      .fill(0)
+      .map((_, index) => (
+        <li key={index + 1}>
+          <p>
+            <Skeleton width={"100%"} />
+          </p>
+        </li>
+      ));
 
   const renderNoComments = () => <p>Tidak ada komentar!</p>;
 
@@ -31,13 +38,13 @@ function ListItem({ users, isError, isLoading }) {
     <ul>
       {users.length
         ? users.map((user, index) => renderUserListItem(user, index))
+        : isLoading
+        ? renderListAlasanSkeleton()
         : isError
         ? renderError()
-        : isLoading
-        ? renderSkeleton()
         : renderNoComments()}
     </ul>
   );
 }
 
-export default ListItem;
+export default React.memo(ListItem);

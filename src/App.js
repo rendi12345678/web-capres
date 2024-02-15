@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useReducer,
   useRef,
-  useTransition,
 } from "react";
 import { useCookies } from "react-cookie";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -32,7 +31,6 @@ const initialState = {
     alasan: "",
   },
   errors: [],
-  users: [],
   id: "",
   alasan: "",
 };
@@ -44,7 +42,6 @@ const actionTypes = {
   HANDLE_LOGIN_SUBMIT: "HANDLE_LOGIN_SUBMIT",
   SET_USER_DETAIL: "SET_USER_DETAIL",
   SET_ERRORS: "SET_ERRORS",
-  SET_USERS: "SET_USERS",
   SET_IS_LOADING: "SET_IS_LOADING",
   SET_ID: "SET_ID",
   SET_ALASAN: "SET_ALASAN",
@@ -77,8 +74,6 @@ const reducer = (state, action) => {
       return { ...state, errors: action.payload };
     case actionTypes.SET_IS_LOADING:
       return { ...state, isLoading: action.payload };
-    case actionTypes.SET_USERS:
-      return { ...state, users: action.payload };
     case actionTypes.SET_IS_OPEN_USER_AUTH:
       return { ...state, isOpenUserAuth: action.payload };
     default:
@@ -103,11 +98,6 @@ const setIdAction = (value) => ({
 
 const setAlasanAction = (value) => ({
   type: actionTypes.SET_ALASAN,
-  payload: value,
-});
-
-const setUsersAction = (value) => ({
-  type: actionTypes.SET_USERS,
   payload: value,
 });
 
@@ -140,7 +130,6 @@ function App() {
     userDetail,
     errors,
     isLoading,
-    users,
     id,
     alasan,
   } = state;
@@ -152,7 +141,6 @@ function App() {
   const localServerUrl = "http://localhost:5000";
   const namaRef = useRef();
   const passwordRef = useRef();
-  const { isPending, startTransition } = useTransition();
 
   const setId = (value) => {
     dispatch(setIdAction(value));
@@ -250,20 +238,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const setAllUsersData = async () => {
-      try {
-        const userData = await getData("/users");
-        if (!userData) return;
-        dispatch(setUsersAction(userData.users));
-      } catch (err) {
-        dispatch(setUsersAction([]));
-      }
-    };
-
-    setAllUsersData();
-  }, [id, alasan]);
-
   const refreshTokenValue = async () => {
     const refreshToken = cookies.refreshToken;
 
@@ -333,7 +307,6 @@ function App() {
     errors,
     setErrorsAction,
     postData,
-    users,
     setIsLoadingAction,
     isLoading,
     id,

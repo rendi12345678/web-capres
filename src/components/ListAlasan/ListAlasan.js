@@ -18,7 +18,7 @@ function ListAlasan() {
       try {
         const userData = await getData("/users");
 
-        if (userData.length) return setIsError(true);
+        if (userData.users.length === 0) return setIsError(true);
         setUsers(userData.users);
         setIsError(false);
       } finally {
@@ -57,7 +57,7 @@ function ListAlasan() {
           <option value="3">Anies</option>
         </select>
       </h3>
-      <SearchBar query={query} setQuery={setQuery} />
+      <SearchBar setQuery={setQuery} />
       <ListItem users={filteredUsers} isError={isError} isLoading={isLoading} />
     </section>
   );

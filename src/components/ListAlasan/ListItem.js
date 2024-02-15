@@ -5,15 +5,13 @@ import "react-loading-skeleton/dist/skeleton.css";
 function ListItem({ users, isError, isLoading }) {
   const renderUserListItem = (user, index) => (
     <li key={index + 1}>
-      {user.nama || user.alasan ? (
+      {user.nama && user.pilihanCapresId ? (
         <blockquote>
           <p>
             "{user.alasan}" - <strong>{user.nama}</strong>
           </p>
         </blockquote>
-      ) : (
-        <Skeleton />
-      )}
+      ) : null}
     </li>
   );
 
@@ -33,18 +31,14 @@ function ListItem({ users, isError, isLoading }) {
       ));
 
   const renderNoComments = () => <p>Tidak ada komentar!</p>;
+  const renderContent = () => {
+    if (isError) return renderError();
+    if (isLoading) return renderListAlasanSkeleton();
+    if (!users.length) return renderNoComments();
+    return users.map((user, index) => renderUserListItem(user, index));
+  };
 
-  return (
-    <ul>
-      {users.length
-        ? users.map((user, index) => renderUserListItem(user, index))
-        : isLoading
-        ? renderListAlasanSkeleton()
-        : isError
-        ? renderError()
-        : renderNoComments()}
-    </ul>
-  );
+  return <ul>{renderContent()}</ul>;
 }
 
 export default React.memo(ListItem);

@@ -46,7 +46,7 @@ function ListSuara() {
     });
 
     return voteCounts;
-  }, [users.length]);
+  }, [id, alasan, users.length]);
 
   const listSuaraSkeleton = () => {
     return Array(3)

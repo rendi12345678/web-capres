@@ -1,30 +1,12 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-import { AppContext } from "../../App";
+import useContextHook from "../../hooks/useContextHook";
+import useGetAllUserData from "../../hooks/useGetAllUserData";
 function ListSuara() {
-  const { getData, id, alasan } = useContext(AppContext);
-  const [users, setUsers] = useState([]);
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const setAllUsersData = async () => {
-      setIsLoading(true);
-      try {
-        const userData = await getData("/users");
-
-        if (userData.length) return setIsError(true);
-        setUsers(userData.users);
-        setIsError(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    setAllUsersData();
-  }, [id, alasan]);
+  const { id, alasan } = useContextHook();
+  const { isError, isLoading, users } = useGetAllUserData();
 
   const jumlahPemilihanCapres = useMemo(() => {
     const voteCounts = {

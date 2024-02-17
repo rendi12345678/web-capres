@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import Input from "../../Input";
+import React from "react";
+import useContextHook from "../../../hooks/useContextHook";
 import Button from "../../Button";
-import { AppContext } from "../../../App";
+import Input from "../../Input";
 function SignUp() {
   const {
     dispatch,
@@ -10,7 +10,7 @@ function SignUp() {
     setFormTypeAction,
     setIsOpenUserAuthAction,
     handleSignUpSubmit,
-  } = useContext(AppContext);
+  } = useContextHook();
 
   return (
     <>

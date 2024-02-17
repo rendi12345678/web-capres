@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
+import useContextHook from "../hooks/useContextHook";
 import Button from "./Button";
-import { AppContext } from "../App";
 function Header() {
   const {
     isAuthorized,
@@ -8,7 +8,7 @@ function Header() {
     dispatch,
     userDetail,
     removeCookieToken,
-  } = useContext(AppContext);
+  } = useContextHook();
 
   const { nama } = userDetail;
 
@@ -21,10 +21,16 @@ function Header() {
 
   const renderUnauthorizedHeader = () => (
     <div>
-      <Button className="daftar" handleClick={() => dispatch(setFormTypeAction("/sign up"))}>
+      <Button
+        className="daftar"
+        handleClick={() => dispatch(setFormTypeAction("/sign up"))}
+      >
         Daftar
       </Button>
-      <Button className="masuk" handleClick={() => dispatch(setFormTypeAction("/login"))}>
+      <Button
+        className="masuk"
+        handleClick={() => dispatch(setFormTypeAction("/login"))}
+      >
         Masuk
       </Button>
     </div>

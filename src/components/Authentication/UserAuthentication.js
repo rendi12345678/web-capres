@@ -1,21 +1,44 @@
-import React, { useContext } from "react";
-import { AppContext } from "../../App";
+import React, { useEffect, useRef } from "react";
+import useContextHook from "../../hooks/useContextHook";
 import { Login, SignUp } from "../lazyLoadComponents";
 
 function UserAuthentication() {
-  const { formType, isOpenUserAuth } =
-    useContext(AppContext);
+  const { formType, isOpenUserAuth } = useContextHook();
+  const overlayRef = useRef();
 
-  return (
-    <div
-      className="overlay"
-      style={{ display: isOpenUserAuth ? "flex" : "none" }}
-    >
-      <div className="wrapper">
-        {formType === "/login" ? <Login /> : <SignUp />}
+  const renderUserAuthentication = () => {
+    if (formType !== "/login") return <SignUp />;
+    return <Login />;
+  };
+
+  const renderOverlay = () => {
+    return (
+      <div className="overlay" ref={overlayRef}>
+        <div className="wrapper">{renderUserAuthentication()}</div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  const addCloseOverlayAnimation = () => {
+    overlayRef.current.style.opacity = "0";
+    setTimeout(() => {
+      overlayRef.current.style.display = "none";
+    }, 500);
+  };
+
+  const addOpenOverlayAnimation = () => {
+    overlayRef.current.style.display = "flex";
+    setTimeout(() => {
+      overlayRef.current.style.opacity = "1";
+    }, 500);
+  };
+
+  useEffect(() => {
+    if (!isOpenUserAuth) return addCloseOverlayAnimation();
+    addOpenOverlayAnimation();
+  }, [isOpenUserAuth]);
+
+  return <>{renderOverlay()};</>;
 }
 
 export default React.memo(UserAuthentication);

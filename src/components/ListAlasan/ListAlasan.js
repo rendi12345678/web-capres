@@ -1,33 +1,13 @@
-import React, { lazy, useContext, useEffect, useMemo, useState } from "react";
+import React, { lazy, useMemo, useState } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
-import { AppContext } from "../../App";
+import useGetAllUserData from "../../hooks/useGetAllUserData.js";
 import SearchBar from "./SearchBar";
 const ListItem = lazy(() => import("./ListItem.js"));
 
 function ListAlasan() {
   const [category, setCategory] = useState("1");
   const [query, setQuery] = useState("");
-  const { getData, id, alasan } = useContext(AppContext);
-  const [users, setUsers] = useState([]);
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const setAllUsersData = async () => {
-      setIsLoading(true);
-      try {
-        const userData = await getData("/users");
-
-        if (userData.users.length === 0) return setIsError(true);
-        setUsers(userData.users);
-        setIsError(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    setAllUsersData();
-  }, [id, alasan]);
+  const { users, isError, isLoading } = useGetAllUserData();
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);

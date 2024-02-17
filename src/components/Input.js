@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import { AppContext } from "../App";
+import React from "react";
+import useContextHook from "../hooks/useContextHook";
 const Input = React.forwardRef((props, ref) => {
-  const { errors } = useContext(AppContext);
+  const { errors } = useContextHook();
   const { name, type, placeholder } = props;
 
   return (

@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import Input from "../../Input";
+import React from "react";
+import useContextHook from "../../../hooks/useContextHook";
 import Button from "../../Button";
-import { AppContext } from "../../../App";
+import Input from "../../Input";
 function Login() {
   const {
     dispatch,
@@ -10,7 +10,7 @@ function Login() {
     setFormTypeAction,
     setIsOpenUserAuthAction,
     handleLoginSubmit,
-  } = useContext(AppContext);
+  } = useContextHook();
 
   return (
     <>
@@ -36,13 +36,14 @@ function Login() {
           >
             Keluar
           </Button>
-          <Button type="submit">
-            Masuk
-          </Button>
+          <Button type="submit">Masuk</Button>
         </div>
         <p>
           <span>Belum punya akun?</span>{" "}
-          <Button className="change-form-type-btn" handleClick={() => dispatch(setFormTypeAction("/sign up"))}>
+          <Button
+            className="change-form-type-btn"
+            handleClick={() => dispatch(setFormTypeAction("/sign up"))}
+          >
             Daftar
           </Button>
         </p>

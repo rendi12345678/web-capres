@@ -277,7 +277,7 @@ select {
   right: 0;
   bottom: 0;
   opacity: 0;
-  display: flex;
+  display: none;
   background: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;

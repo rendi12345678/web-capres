@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useMemo } from "react";
-import { AppContext } from "../../App";
+import React, { useEffect, useMemo } from "react";
+import useContextHook from "../../hooks/useContextHook";
 import CapresCard from "./CapresCard";
 
 function ListCapresItems() {
@@ -11,7 +11,7 @@ function ListCapresItems() {
     userDetail,
     setAlasan,
     isAuthorized,
-  } = useContext(AppContext);
+  } = useContextHook();
 
   useEffect(() => {
     if (userDetail.pilihanCapresId !== "") {
@@ -80,4 +80,4 @@ function ListCapresItems() {
   return <ul>{listCapres ? printListCapres() : null}</ul>;
 }
 
-export default ListCapresItems;
+export default React.memo(ListCapresItems);

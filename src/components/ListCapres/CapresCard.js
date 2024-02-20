@@ -24,4 +24,4 @@ function CapresCard({ capres, capresId, pilihCapres }) {
   );
 }
 
-export default CapresCard;
+export default React.memo(CapresCard);

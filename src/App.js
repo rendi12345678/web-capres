@@ -1,13 +1,8 @@
 import axios from "axios";
-import React, {
-  Suspense,
-  createContext,
-  useEffect,
-  useReducer,
-  useRef,
-} from "react";
+import React, { Suspense, useEffect, useReducer, useRef } from "react";
 import { useCookies } from "react-cookie";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { createContext } from "use-context-selector";
 import "./App.css";
 import {
   Header,
@@ -150,23 +145,13 @@ function App() {
     dispatch(setAlasanAction(value));
   };
 
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    submitLoginForm();
-  };
-
-  const handleSignUpSubmit = async (e) => {
-    e.preventDefault();
-    submitSignUpForm();
-  };
-
   const submitLoginForm = async () => {
     try {
       dispatch(setIsLoadingAction(true));
 
       const data = await postData("/login", {
-        nama: namaRef.current.value,
-        password: passwordRef.current.value,
+        nama: namaRef.current?.value,
+        password: passwordRef.current?.value,
       });
 
       const expirationTimeToken = new Date();
@@ -195,12 +180,17 @@ function App() {
     }
   };
 
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    submitLoginForm();
+  };
+
   const submitSignUpForm = async () => {
     try {
       dispatch(setIsLoadingAction(true));
       const data = await postData("/sign-up", {
-        nama: namaRef.current.value,
-        password: passwordRef.current.value,
+        nama: namaRef.current?.value,
+        password: passwordRef.current?.value,
       });
 
       if (data.success) {
@@ -211,6 +201,11 @@ function App() {
     } finally {
       dispatch(setIsLoadingAction(false));
     }
+  };
+
+  const handleSignUpSubmit = (e) => {
+    e.preventDefault();
+    submitSignUpForm();
   };
 
   const removeCookieToken = () => {
@@ -338,7 +333,7 @@ function App() {
                 <ListSuara />
                 <ListAlasan />
               </main>
-              {isOpenUserAuth ? <UserAuthentication /> : null}
+              <UserAuthentication />
             </div>
           </Suspense>
         </SkeletonTheme>

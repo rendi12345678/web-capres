@@ -8,6 +8,7 @@ function Header() {
     dispatch,
     userDetail,
     removeCookieToken,
+    setIsOpenUserAuthAction,
   } = useContextHook();
 
   const { nama } = userDetail;
@@ -19,18 +20,17 @@ function Header() {
     </div>
   );
 
+  const handleAuthForm = (value) => {
+    dispatch(setFormTypeAction(value));
+    dispatch(setIsOpenUserAuthAction(true));
+  };
+
   const renderUnauthorizedHeader = () => (
     <div>
-      <Button
-        className="daftar"
-        handleClick={() => dispatch(setFormTypeAction("/sign up"))}
-      >
+      <Button className="daftar" handleClick={() => handleAuthForm("/sign-up")}>
         Daftar
       </Button>
-      <Button
-        className="masuk"
-        handleClick={() => dispatch(setFormTypeAction("/login"))}
-      >
+      <Button className="masuk" handleClick={() => handleAuthForm("/login")}>
         Masuk
       </Button>
     </div>

@@ -22,4 +22,4 @@ function SelectAlasan({ setCategory, category }) {
   );
 }
 
-export default SelectAlasan;
+export default React.memo(SelectAlasan);

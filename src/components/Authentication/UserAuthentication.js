@@ -3,8 +3,13 @@ import useContextHook from "../../hooks/useContextHook";
 import { Login, SignUp } from "../lazyLoadComponents";
 
 function UserAuthentication() {
-  const { formType, isOpenUserAuth, dispatch, setFormTypeAction } =
-    useContextHook();
+  const {
+    formType,
+    isOpenUserAuth,
+    dispatch,
+    setFormTypeAction,
+    setIsOpenUserAuthAction,
+  } = useContextHook();
   const overlayRef = useRef();
 
   const handleLinkChange = (value) => {
@@ -50,7 +55,7 @@ function UserAuthentication() {
 
   useEffect(() => {
     if (!isOpenUserAuth) return addCloseOverlayAnimation();
-    addOpenOverlayAnimation();
+    return addOpenOverlayAnimation();
   }, [isOpenUserAuth]);
 
   return <>{renderOverlay()};</>;

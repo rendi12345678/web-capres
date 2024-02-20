@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
 function SearchBar({ setQuery }) {
-  const [isSearching, setIsSearching] = useState(false);
-
   const debounce = (cb, delay = 1000) => {
     let timeout;
 

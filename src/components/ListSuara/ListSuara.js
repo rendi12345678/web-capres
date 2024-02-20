@@ -60,16 +60,16 @@ function ListSuara() {
     <p style={{ color: "red", marginTop: "1rem" }}>Something went wrong!</p>
   );
 
+  const renderContent = () => {
+    if (isLoading) return listSuaraSkeleton();
+    if (isError) return renderError();
+    return renderListSuara();
+  };
+
   return (
     <section className="list-suara">
       <h3>Hasil semua suara</h3>
-      <ul>
-        {isLoading
-          ? listSuaraSkeleton()
-          : isError
-          ? renderError()
-          : renderListSuara()}
-      </ul>
+      <ul>{renderContent()}</ul>
     </section>
   );
 }

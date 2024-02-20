@@ -23,7 +23,7 @@ export const AppContext = createContext(null);
 const initialState = {
   isAuthorized: false,
   isLoading: false,
-  formType: "login",
+  formType: "/login",
   isOpenUserAuth: false,
   userDetail: {
     nama: "",
@@ -152,8 +152,18 @@ function App() {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    submitLoginForm();
+  };
+
+  const handleSignUpSubmit = async (e) => {
+    e.preventDefault();
+    submitSignUpForm();
+  };
+
+  const submitLoginForm = async () => {
     try {
       dispatch(setIsLoadingAction(true));
+
       const data = await postData("/login", {
         nama: namaRef.current.value,
         password: passwordRef.current.value,
@@ -185,8 +195,7 @@ function App() {
     }
   };
 
-  const handleSignUpSubmit = async (e) => {
-    e.preventDefault();
+  const submitSignUpForm = async () => {
     try {
       dispatch(setIsLoadingAction(true));
       const data = await postData("/sign-up", {
@@ -224,13 +233,14 @@ function App() {
   const getData = async (endpoint) => {
     const token = cookies.token;
     const fullUrlString = `${productionServerUrl}/api${endpoint}`;
+    const option = {
+      headers: {
+        authorization: token,
+      },
+    };
 
     try {
-      const response = await axios.get(fullUrlString, {
-        headers: {
-          authorization: token,
-        },
-      });
+      const response = await axios.get(fullUrlString, option);
 
       return response.data;
     } catch (e) {
@@ -328,7 +338,7 @@ function App() {
                 <ListSuara />
                 <ListAlasan />
               </main>
-              <UserAuthentication />
+              {isOpenUserAuth ? <UserAuthentication /> : null}
             </div>
           </Suspense>
         </SkeletonTheme>

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo } from "react";
 import { AppContext } from "../../App";
+import CapresCard from "./CapresCard";
 
 function ListCapresItems() {
   const {
@@ -44,7 +45,9 @@ function ListCapresItems() {
       if (!isAuthorized) return alert("Silahkan login dulu!");
 
       const inputAlasan = window.prompt(
-        `Masukkan alasan memilih ${listCapres.find((capres) => capres.id === id).namaPresiden} :`
+        `Masukkan alasan memilih ${
+          listCapres.find((capres) => capres.id === id).namaPresiden
+        } :`
       );
 
       if (inputAlasan === null) {
@@ -65,24 +68,13 @@ function ListCapresItems() {
   );
 
   const printListCapres = () =>
-    listCapres.map(({ id, urlGambar, namaPresiden, namaWakil }) => (
-      <li key={id}>
-        <figure>
-          <div onClick={() => pilihCapres(id)}>
-            <img src={urlGambar} alt={`${namaPresiden - namaWakil}`} />
-            <h1
-              className={namaPresiden}
-              style={{ display: capresId === id ? "block" : "none" }}
-            >
-              TERPILIH!
-            </h1>
-          </div>
-          <figcaption>
-            <h5>Presiden : {namaPresiden}</h5>
-            <p>Wakil : {namaWakil}</p>
-          </figcaption>
-        </figure>
-      </li>
+    listCapres.map((capres, index) => (
+      <CapresCard
+        capres={capres}
+        pilihCapres={pilihCapres}
+        capresId={capresId}
+        key={index + 1}
+      />
     ));
 
   return <ul>{listCapres ? printListCapres() : null}</ul>;

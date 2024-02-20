@@ -2,12 +2,11 @@ import React from "react";
 import useContextHook from "../../../hooks/useContextHook";
 import Button from "../../Button";
 import Input from "../../Input";
-function Login() {
+function Login({ handleLinkChange }) {
   const {
     dispatch,
     namaRef,
     passwordRef,
-    setFormTypeAction,
     setIsOpenUserAuthAction,
     handleLoginSubmit,
   } = useContextHook();
@@ -42,7 +41,7 @@ function Login() {
           <span>Belum punya akun?</span>{" "}
           <Button
             className="change-form-type-btn"
-            handleClick={() => dispatch(setFormTypeAction("/sign up"))}
+            handleClick={() => handleLinkChange("/sign-up")}
           >
             Daftar
           </Button>

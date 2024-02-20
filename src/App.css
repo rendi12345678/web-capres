@@ -77,6 +77,7 @@ body {
   font-size: var(--body-text);
   font-weight: 900;
   border: 0;
+  cursor: pointer;
   transition: 300ms ease-in-out;
 }
 
@@ -171,6 +172,7 @@ select {
   font-weight: 400;
   background: var(--secondary-color);
   font-family: "Source Sans 3";
+  cursor: pointer;
 }
 
 .app-container strong {
@@ -234,6 +236,7 @@ select {
 }
 
 .app-container figure img {
+  cursor: pointer;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
@@ -273,8 +276,9 @@ select {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
   display: flex;
+  background: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
   transition: 500ms;
@@ -347,6 +351,7 @@ select {
   padding: 0.5rem 2.2rem;
   font-family: "Source Sans 3", sans-serif;
   font-weight: 900;
+  cursor: pointer;
 }
 
 .overlay form .close-btn {
@@ -359,6 +364,7 @@ select {
   padding: 0;
   background: transparent;
   color: var(--headings-color);
+  cursor: pointer;
 }
 
 .overlay .error-msg {

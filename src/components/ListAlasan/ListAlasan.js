@@ -1,6 +1,7 @@
 import React, { lazy, useMemo, useState } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import useGetAllUserData from "../../hooks/useGetAllUserData.js";
+import useGetLocalStorage from "../../hooks/useGetLocalStorage.js";
 import SearchBar from "./SearchBar";
 import SelectAlasan from "./SelectAlasan.js";
 const ListItem = lazy(() => import("./ListItem.js"));
@@ -8,7 +9,8 @@ const ListItem = lazy(() => import("./ListItem.js"));
 function ListAlasan() {
   const [category, setCategory] = useState("1");
   const [query, setQuery] = useState("");
-  const { users, isError, isLoading } = useGetAllUserData();
+  const { isError, isLoading } = useGetAllUserData();
+  const users = useGetLocalStorage("users") || [];
 
   const filteredUsers = useMemo(() => {
     if (!users) return [];

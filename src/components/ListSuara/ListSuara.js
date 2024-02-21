@@ -1,12 +1,14 @@
 import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
 import useContextHook from "../../hooks/useContextHook";
 import useGetAllUserData from "../../hooks/useGetAllUserData";
+import useGetLocalStorage from "../../hooks/useGetLocalStorage";
+
 function ListSuara() {
   const { id, alasan } = useContextHook();
-  const { isError, isLoading, users } = useGetAllUserData();
+  const { isError, isLoading } = useGetAllUserData();
+  const users = useGetLocalStorage("users") || [];
 
   const jumlahPemilihanCapres = useMemo(() => {
     const voteCounts = {

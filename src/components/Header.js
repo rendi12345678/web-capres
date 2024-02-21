@@ -1,17 +1,17 @@
 import React from "react";
 import useContextHook from "../hooks/useContextHook";
+import useGetLocalStorage from "../hooks/useGetLocalStorage";
 import Button from "./Button";
 function Header() {
   const {
     isAuthorized,
     setFormTypeAction,
     dispatch,
-    userDetail,
     removeCookieToken,
     setIsOpenUserAuthAction,
   } = useContextHook();
 
-  const { nama } = userDetail;
+  const { nama } = useGetLocalStorage("user-detail");
 
   const renderAuthorizedHeader = () => (
     <div>

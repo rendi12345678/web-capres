@@ -11,6 +11,8 @@ import {
   ListSuara,
   UserAuthentication,
 } from "./components/lazyLoadComponents.js";
+import useGetLocalStorage from "./hooks/useGetLocalStorage.js";
+import useSetLocalStorage from "./hooks/useSetLocalStorage.js";
 import "./styles/reset.css";
 
 export const AppContext = createContext(null);
@@ -136,6 +138,18 @@ function App() {
   const localServerUrl = "http://localhost:5000";
   const namaRef = useRef();
   const passwordRef = useRef();
+  const localStorageUserDetail = useGetLocalStorage("user-detail") || {};
+  const localStorageIsAthorized = useGetLocalStorage("is-authorized") || {
+    isAuthorized: false,
+  };
+  const [localUserDetailValue, setUserDetail] = useSetLocalStorage(
+    "user-detail",
+    localStorageUserDetail
+  );
+  const [localIsAuthorizedValue, setIsAuthorized] = useSetLocalStorage(
+    "is-authorized",
+    localStorageIsAthorized
+  );
 
   const setId = (value) => {
     dispatch(setIdAction(value));
@@ -212,6 +226,8 @@ function App() {
     removeCookie("token", { path: "/" });
     removeCookie("refreshToken", { path: "/" });
     setId("");
+    setIsAuthorized({ isAuthorized: false });
+    setUserDetail({});
   };
 
   const postData = async (endpoint, data) => {
@@ -275,12 +291,20 @@ function App() {
       }
 
       try {
-        const data = await getData(`/isAuthorized/${token}`);
-        if (data.isAuthorized) {
+        const {
+          isAuthorized = localIsAuthorizedValue.isAuthorized,
+          userDetail = localUserDetailValue,
+        } = await getData(`/isAuthorized/${token}`);
+
+        if (isAuthorized) {
+          setIsAuthorized({ isAuthorized: true });
           dispatch(setIsAuthorizedAction(true));
           dispatch(setIsOpenUserAuthAction(false));
-          dispatch(setUserDetailAction(data.userDetail));
+          setUserDetail(userDetail);
+          dispatch(setUserDetailAction(userDetail));
         } else {
+          setIsAuthorized({ isAuthorized: false });
+          setUserDetail({});
           dispatch(setIsAuthorizedAction(false));
         }
       } catch (err) {

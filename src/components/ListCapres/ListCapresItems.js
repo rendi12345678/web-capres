@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import useContextHook from "../../hooks/useContextHook";
+import useGetLocalStorage from "../../hooks/useGetLocalStorage";
 import CapresCard from "./CapresCard";
 
 function ListCapresItems() {
@@ -8,16 +9,17 @@ function ListCapresItems() {
     setId,
     postData,
     cookies,
-    userDetail,
     setAlasan,
     isAuthorized,
   } = useContextHook();
+
+  const userDetail = useGetLocalStorage("user-detail");
 
   useEffect(() => {
     if (userDetail.pilihanCapresId !== "") {
       setId(userDetail.pilihanCapresId);
     }
-  }, [userDetail]);
+  }, [userDetail.pilihanCapresId]);
 
   const listCapres = [
     {

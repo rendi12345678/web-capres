@@ -3,12 +3,12 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function ListItem({ users, isError, isLoading }) {
-  const renderUserListItem = (user, index) => (
+  const renderUserListItem = ({ nama, alasan, pilihanCapresId, index }) => (
     <li key={index + 1}>
-      {user.nama && user.pilihanCapresId ? (
+      {nama && pilihanCapresId ? (
         <blockquote>
           <p>
-            "{user.alasan}" - <strong>{user.nama}</strong>
+            "{alasan}" - <strong>{nama}</strong>
           </p>
         </blockquote>
       ) : null}
@@ -35,7 +35,14 @@ function ListItem({ users, isError, isLoading }) {
     if (isError) return renderError();
     if (isLoading) return renderListAlasanSkeleton();
     if (!users.length) return renderNoComments();
-    return users.map((user, index) => renderUserListItem(user, index));
+    return users.map(({ nama, pilihanCapresId, alasan }, index) =>
+      renderUserListItem({
+        nama,
+        pilihanCapresId,
+        alasan,
+        index,
+      })
+    );
   };
 
   return <ul>{renderContent()}</ul>;

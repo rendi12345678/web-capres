@@ -72,7 +72,10 @@ function ListCapresItems() {
   const printListCapres = () =>
     listCapres.map((capres, index) => (
       <CapresCard
-        capres={capres}
+        id={capres.id}
+        urlGambar={capres.urlGambar}
+        namaPresiden={capres.namaPresiden}
+        namaWakil={capres.namaWakil}
         pilihCapres={pilihCapres}
         capresId={capresId}
         key={index + 1}

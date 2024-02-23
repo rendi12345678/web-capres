@@ -6,7 +6,6 @@ import useSetLocalStorage from "./useSetLocalStorage";
 function useGetAllUserData() {
   const { id, alasan, getData } = useContextHook();
   const localStorageCache = useGetLocalStorage("users") || [];
-  // const [users, setUsers] = useState(localStorageCache || []);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useSetLocalStorage("users", localStorageCache);

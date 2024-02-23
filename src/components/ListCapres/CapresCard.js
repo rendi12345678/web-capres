@@ -1,8 +1,13 @@
 import React from "react";
 
-function CapresCard({ capres, capresId, pilihCapres }) {
-  const { id, urlGambar, namaPresiden, namaWakil } = capres;
-
+function CapresCard({
+  id,
+  urlGambar,
+  namaPresiden,
+  namaWakil,
+  capresId,
+  pilihCapres,
+}) {
   return (
     <li>
       <figure>

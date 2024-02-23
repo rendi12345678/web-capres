@@ -3,13 +3,8 @@ import useContextHook from "../../hooks/useContextHook";
 import { Login, SignUp } from "../lazyLoadComponents";
 
 function UserAuthentication() {
-  const {
-    formType,
-    isOpenUserAuth,
-    dispatch,
-    setFormTypeAction,
-    setIsOpenUserAuthAction,
-  } = useContextHook();
+  const { formType, isOpenUserAuth, dispatch, setFormTypeAction } =
+    useContextHook();
   const overlayRef = useRef();
 
   const handleLinkChange = (value) => {

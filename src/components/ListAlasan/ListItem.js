@@ -1,27 +1,15 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+const Item = lazy(() => import("./Item"));
 
 function ListItem({ users, isError, isLoading }) {
   const rowRenderer = users.map((user, index) => {
     const { nama, pilihanCapresId, alasan } = user;
     return (
-      <li key={index + 1}>
-        {nama && pilihanCapresId ? (
-          <blockquote>
-            <p>
-              <strong>~ {nama}</strong>
-            </p>
-            <p>" {alasan} "</p>
-            <div className="icons">
-              <button className="like-icon">s</button>
-              <span className="total-amount">300</span>
-              <button className="like-icon">d</button>
-              <span className="total-amount">300</span>
-            </div>
-          </blockquote>
-        ) : null}
-      </li>
+      <Suspense fallback={null} key={index + 1}>
+        <Item nama={nama} pilihanCapresId={pilihanCapresId} alasan={alasan} />
+      </Suspense>
     );
   });
 

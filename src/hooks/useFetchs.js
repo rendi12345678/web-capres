@@ -5,11 +5,11 @@ function useFetchs({ cookies }) {
   const localServerUrl = "http://localhost:5000";
 
   const postData = async (endpoint, data) => {
-    const fullUrlString = `${localServerUrl}/api${endpoint}`;
+    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
     try {
-      const response = await axios.post(fullUrlString, data);
+      const { data = {} } = await axios.post(fullUrlString, data);
 
-      return response.data;
+      return data;
     } catch (e) {
       return [];
     }
@@ -17,7 +17,7 @@ function useFetchs({ cookies }) {
 
   const getData = async (endpoint) => {
     const token = cookies.token;
-    const fullUrlString = `${localServerUrl}/api${endpoint}`;
+    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
     const option = {
       headers: {
         authorization: token,
@@ -25,9 +25,9 @@ function useFetchs({ cookies }) {
     };
 
     try {
-      const response = await axios.get(fullUrlString, option);
+      const { data = {} } = await axios.get(fullUrlString, option);
 
-      return response.data;
+      return data;
     } catch (e) {
       return [];
     }

@@ -1,4 +1,5 @@
 import React from "react";
+import Select from "../Select";
 
 function SelectAlasan({ setCategory, category }) {
   const handleCategoryChange = (e) => {
@@ -8,16 +9,11 @@ function SelectAlasan({ setCategory, category }) {
   return (
     <h3>
       Alasan2 pilih &nbsp;
-      <select
-        name="capres"
-        id="capres"
-        onChange={handleCategoryChange}
-        value={category}
-      >
-        <option value="1">Prabowo</option>
-        <option value="2">Ganjar</option>
-        <option value="3">Anies</option>
-      </select>
+      <Select handleOnChange={handleCategoryChange}>
+        <Select.Option key="1">Prabowo</Select.Option>
+        <Select.Option key="2">Ganjar</Select.Option>
+        <Select.Option key="3">Anies</Select.Option>
+      </Select>
     </h3>
   );
 }

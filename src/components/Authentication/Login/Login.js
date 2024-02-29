@@ -1,20 +1,14 @@
 import React from "react";
 import useContextHook from "../../../hooks/useContextHook";
-import Button from "../../Button";
+import Form from "../../Form";
 import Input from "../../Input";
-function Login({ handleLinkChange }) {
-  const {
-    dispatch,
-    namaRef,
-    passwordRef,
-    setIsOpenUserAuthAction,
-    handleLoginSubmit,
-  } = useContextHook();
+function Login() {
+  const { namaRef, passwordRef, handleLoginSubmit } = useContextHook();
 
   return (
     <>
       <h1>Masuk</h1>
-      <form onSubmit={handleLoginSubmit}>
+      <Form onSubmit={handleLoginSubmit}>
         <Input
           type="text"
           ref={namaRef}
@@ -27,26 +21,7 @@ function Login({ handleLinkChange }) {
           name="password"
           placeholder="Masukkan password anda!"
         />
-        <div>
-          <Button
-            type="button"
-            className="close-btn"
-            handleClick={() => dispatch(setIsOpenUserAuthAction(false))}
-          >
-            Keluar
-          </Button>
-          <Button type="submit">Masuk</Button>
-        </div>
-        <p>
-          <span>Belum punya akun?</span>{" "}
-          <Button
-            className="change-form-type-btn"
-            handleClick={() => handleLinkChange("/sign-up")}
-          >
-            Daftar
-          </Button>
-        </p>
-      </form>
+      </Form>
     </>
   );
 }

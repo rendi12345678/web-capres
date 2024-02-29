@@ -189,7 +189,7 @@ select {
   display: grid;
   width: 100%;
   gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
   margin-top: 2rem;
 }
 
@@ -247,13 +247,20 @@ select {
   gap: 2rem;
   margin-top: 2rem;
   justify-items: start;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+}
+
+.app-container .item-list {
+  height: 40rem;
+  width: 100%;
+  position: relative;
 }
 
 .app-container .list-alasan ul {
   display: grid;
-  margin-top: 2rem;
   row-gap: 2rem;
+  margin-top: 2rem;
+  box-sizing: border-box;
 }
 
 .app-container .list-suara ul li {
@@ -266,8 +273,32 @@ select {
   row-gap: 1rem;
 }
 
-.app-container .list-alasan ul li p {
+.app-container .list-alasan li p {
   text-align: left;
+}
+
+.app-container .list-alasan ul li .icons {
+  display: grid;
+  width: max-content;
+  column-gap: 1.5rem;
+  justify-content: space-between;
+  grid-auto-flow: column;
+  margin-top: 0.8rem;
+  align-items: center;
+}
+
+.app-container .list-alasan ul li .icons .total-amount {
+  color: var(--body-color);
+  font-size: calc(var(--body-text) - 0.2rem);
+}
+
+.app-container .list-alasan ul li button {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 50%;
+  border: 0;
+  background: var(--secondary-color);
+  color: var(--contrast-color);
 }
 
 .overlay {

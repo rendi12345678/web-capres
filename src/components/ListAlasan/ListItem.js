@@ -3,17 +3,29 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function ListItem({ users, isError, isLoading }) {
-  const renderUserListItem = ({ nama, alasan, pilihanCapresId, index }) => (
-    <li key={index + 1}>
-      {nama && pilihanCapresId ? (
-        <blockquote>
-          <p>
-            "{alasan}" - <strong>{nama}</strong>
-          </p>
-        </blockquote>
-      ) : null}
-    </li>
-  );
+  const rowRenderer = users.map((user, index) => {
+    const { nama, pilihanCapresId, alasan } = user;
+    return (
+      <li key={index + 1}>
+        {nama && pilihanCapresId ? (
+          <blockquote>
+            <p>
+              <strong>~ {nama}</strong>
+            </p>
+            <p>" {alasan} "</p>
+            <div className="icons">
+              <button className="like-icon">s</button>
+              <span className="total-amount">300</span>
+              <button className="like-icon">d</button>
+              <span className="total-amount">300</span>
+            </div>
+          </blockquote>
+        ) : null}
+      </li>
+    );
+  });
+
+  const renderUserList = () => rowRenderer;
 
   const renderError = () => (
     <p style={{ color: "red", marginTop: "1rem" }}>Something went wrong!</p>
@@ -35,14 +47,7 @@ function ListItem({ users, isError, isLoading }) {
     if (isError) return renderError();
     if (isLoading) return renderListAlasanSkeleton();
     if (!users.length) return renderNoComments();
-    return users.map(({ nama, pilihanCapresId, alasan }, index) =>
-      renderUserListItem({
-        nama,
-        pilihanCapresId,
-        alasan,
-        index,
-      })
-    );
+    return renderUserList();
   };
 
   return <ul>{renderContent()}</ul>;

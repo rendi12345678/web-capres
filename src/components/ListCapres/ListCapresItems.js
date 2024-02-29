@@ -1,73 +1,12 @@
-import React, { useEffect, useMemo } from "react";
-import useContextHook from "../../hooks/useContextHook";
-import useGetLocalStorage from "../../hooks/useGetLocalStorage";
+import React from "react";
+import usePilihCapres from "../../hooks/usePilihCapres";
+import useUserDetail from "../../hooks/useUserDetail";
 import CapresCard from "./CapresCard";
 
 function ListCapresItems() {
-  const {
-    id: capresId,
-    setId,
-    postData,
-    cookies,
-    setAlasan,
-    isAuthorized,
-  } = useContextHook();
-
-  const userDetail = useGetLocalStorage("user-detail");
-
-  useEffect(() => {
-    if (userDetail.pilihanCapresId !== "") {
-      setId(userDetail.pilihanCapresId);
-    }
-  }, [userDetail.pilihanCapresId]);
-
-  const listCapres = [
-    {
-      id: "1",
-      namaPresiden: "Prabowo Subianto",
-      namaWakil: "Gibran Rakabuming Raka",
-      urlGambar: "/img/prabowo-gibran.jpg",
-    },
-    {
-      id: "2",
-      namaPresiden: "Ganjar Pranowo",
-      namaWakil: "Mahfud Md",
-      urlGambar: "/img/ganjar-mahfud.jpg",
-    },
-    {
-      id: "3",
-      namaPresiden: "Anies Baswedan",
-      namaWakil: "Muhaimin Iskandar",
-      urlGambar: "/img/anis-muhaimin.webp",
-    },
-  ];
-
-  const pilihCapres = useMemo(
-    () => async (id) => {
-      if (!isAuthorized) return alert("Silahkan login dulu!");
-
-      const inputAlasan = window.prompt(
-        `Masukkan alasan memilih ${
-          listCapres.find((capres) => capres.id === id).namaPresiden
-        } :`
-      );
-
-      if (inputAlasan === null) {
-        return;
-      }
-
-      setId(id);
-      const data = await postData(`/pilih-capres/${cookies.token}/${id}`, {
-        pilihanCapresId: id,
-        alasan: inputAlasan,
-      });
-
-      if (data.success) {
-        setAlasan(() => inputAlasan);
-      }
-    },
-    [capresId, isAuthorized]
-  );
+  const { listCapres, pilihCapres, setCapresIdAction, capresId } =
+    usePilihCapres();
+  useUserDetail(setCapresIdAction);
 
   const printListCapres = () =>
     listCapres.map((capres, index) => (

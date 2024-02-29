@@ -1,21 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import useContextHook from "../../hooks/useContextHook";
-import { Login, SignUp } from "../lazyLoadComponents";
+import useOverlayAnimations from "../../hooks/useOverlayAnimations";
+import Login from "./Login/Login";
+import SignUp from "./SignUp/SignUp";
 
 function UserAuthentication() {
-  const { formType, isOpenUserAuth, dispatch, setFormTypeAction } =
-    useContextHook();
+  const { formType, isOpenUserAuth } = useContextHook();
   const overlayRef = useRef();
-
-  const handleLinkChange = (value) => {
-    dispatch(setFormTypeAction(value));
-  };
+  useOverlayAnimations({ overlayRef, isOpenUserAuth });
 
   const renderUserAuthentication = () => {
     if (!isOpenUserAuth) return null;
-    if (formType !== "/login")
-      return <SignUp handleLinkChange={handleLinkChange} />;
-    return <Login handleLinkChange={handleLinkChange} />;
+    if (formType !== "/login") return <SignUp />;
+    return <Login />;
   };
 
   const renderOverlay = () => {
@@ -25,33 +22,6 @@ function UserAuthentication() {
       </div>
     );
   };
-
-  const addCloseOverlayAnimation = () => {
-    changeOpacity("0");
-    setTimeout(() => {
-      changeDisplay("none");
-    }, 500);
-  };
-
-  const addOpenOverlayAnimation = () => {
-    changeDisplay("flex");
-    setTimeout(() => {
-      changeOpacity("1");
-    }, 500);
-  };
-
-  const changeDisplay = (value) => {
-    overlayRef.current.style.display = value;
-  };
-
-  const changeOpacity = (value) => {
-    overlayRef.current.style.opacity = value;
-  };
-
-  useEffect(() => {
-    if (!isOpenUserAuth) return addCloseOverlayAnimation();
-    return addOpenOverlayAnimation();
-  }, [isOpenUserAuth]);
 
   return <>{renderOverlay()};</>;
 }

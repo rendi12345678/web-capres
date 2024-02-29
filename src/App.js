@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { Suspense, useEffect, useReducer, useRef } from "react";
+import React, { Suspense, useReducer, useRef } from "react";
 import { useCookies } from "react-cookie";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { createContext } from "use-context-selector";
@@ -11,8 +10,15 @@ import {
   ListSuara,
   UserAuthentication,
 } from "./components/lazyLoadComponents.js";
+import useCheckIsUserAuthorized from "./hooks/useCheckIsUserAuthorized.js";
+import useDispatchActions from "./hooks/useDispatchActions.js";
+import useFetchs from "./hooks/useFetchs.js";
 import useGetLocalStorage from "./hooks/useGetLocalStorage.js";
+import useRefreshToken from "./hooks/useRefreshToken.js";
+import useRemoveCookieToken from "./hooks/useRemoveCookieToken.js";
 import useSetLocalStorage from "./hooks/useSetLocalStorage.js";
+import useSignUpForm from "./hooks/useSignUpForm.js";
+import useSubmitLoginForm from "./hooks/useSubmitLoginForm.js";
 import "./styles/reset.css";
 
 export const AppContext = createContext(null);
@@ -78,46 +84,6 @@ const reducer = (state, action) => {
   }
 };
 
-const setIsAuthorizedAction = (value) => ({
-  type: actionTypes.SET_IS_AUTHORIZED,
-  payload: value,
-});
-
-const setErrorsAction = (value) => ({
-  type: actionTypes.SET_ERRORS,
-  payload: value,
-});
-
-const setIdAction = (value) => ({
-  type: actionTypes.SET_ID,
-  payload: value,
-});
-
-const setAlasanAction = (value) => ({
-  type: actionTypes.SET_ALASAN,
-  payload: value,
-});
-
-const setIsLoadingAction = (value) => ({
-  type: actionTypes.SET_IS_LOADING,
-  payload: value,
-});
-
-const setFormTypeAction = (value) => ({
-  type: actionTypes.SET_FORM_TYPE,
-  payload: value,
-});
-
-const setUserDetailAction = (value) => ({
-  type: actionTypes.SET_USER_DETAIL,
-  payload: value,
-});
-
-const setIsOpenUserAuthAction = (value) => ({
-  type: actionTypes.SET_IS_OPEN_USER_AUTH,
-  payload: value,
-});
-
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
@@ -134,10 +100,9 @@ function App() {
     "token",
     "refreshToken",
   ]);
-  const productionServerUrl = "https://lovely-tan-dove.cyclic.app";
-  const localServerUrl = "http://localhost:5000";
   const namaRef = useRef();
   const passwordRef = useRef();
+  const recaptchaRef = useRef();
   const localStorageUserDetail = useGetLocalStorage("user-detail") || {};
   const localStorageIsAthorized = useGetLocalStorage("is-authorized") || {
     isAuthorized: false,
@@ -151,172 +116,60 @@ function App() {
     localStorageIsAthorized
   );
 
-  const setId = (value) => {
-    dispatch(setIdAction(value));
-  };
+  const {
+    setIsAuthorizedAction,
+    setAlasanAction,
+    setCapresIdAction,
+    setErrorsAction,
+    setUserDetailAction,
+    setIsOpenUserAuthAction,
+    setIsLoadingAction,
+    setFormTypeAction,
+  } = useDispatchActions({ dispatch, actionTypes });
 
-  const setAlasan = (value) => {
-    dispatch(setAlasanAction(value));
-  };
+  const { removeCookieToken } = useRemoveCookieToken({
+    removeCookie,
+    setCapresIdAction,
+    setIsAuthorized,
+    setUserDetail,
+  });
 
-  const submitLoginForm = async () => {
-    try {
-      dispatch(setIsLoadingAction(true));
+  const { postData, getData } = useFetchs({ cookies });
+  useRefreshToken({ postData, cookies, setCookie });
 
-      const data = await postData("/login", {
-        nama: namaRef.current?.value,
-        password: passwordRef.current?.value,
-      });
+  useCheckIsUserAuthorized({
+    cookies,
+    setIsAuthorized,
+    setIsAuthorizedAction,
+    localIsAuthorizedValue,
+    localUserDetailValue,
+    getData,
+    setIsOpenUserAuthAction,
+    setUserDetail,
+    setUserDetailAction,
+  });
 
-      const expirationTimeToken = new Date();
-      expirationTimeToken.setMinutes(expirationTimeToken.getMinutes() + 10);
-
-      const expirationTimeRefreshToken = new Date();
-      expirationTimeRefreshToken.setDate(
-        expirationTimeRefreshToken.getDate() + 7
-      );
-
-      if (data.success) {
-        setCookie("token", data.token, {
-          path: "/",
-          expires: expirationTimeToken,
-        });
-        setCookie("refreshToken", data.refreshToken, {
-          path: "/",
-          expires: expirationTimeRefreshToken,
-        });
-        dispatch(setIsAuthorizedAction(true));
-      } else {
-        dispatch(setErrorsAction(data.errors));
-      }
-    } finally {
-      dispatch(setIsLoadingAction(false));
-    }
-  };
-
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    submitLoginForm();
-  };
-
-  const submitSignUpForm = async () => {
-    try {
-      dispatch(setIsLoadingAction(true));
-      const data = await postData("/sign-up", {
-        nama: namaRef.current?.value,
-        password: passwordRef.current?.value,
-      });
-
-      if (data.success) {
-        dispatch(setFormTypeAction(data.redirect));
-      } else {
-        dispatch(setErrorsAction(data.errors));
-      }
-    } finally {
-      dispatch(setIsLoadingAction(false));
-    }
-  };
-
-  const handleSignUpSubmit = (e) => {
-    e.preventDefault();
-    submitSignUpForm();
-  };
-
-  const removeCookieToken = () => {
-    removeCookie("token", { path: "/" });
-    removeCookie("refreshToken", { path: "/" });
-    setId("");
-    setIsAuthorized({ isAuthorized: false });
-    setUserDetail({});
-  };
-
-  const postData = async (endpoint, data) => {
-    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
-    try {
-      const response = await axios.post(fullUrlString, data);
-
-      return response.data;
-    } catch (e) {
-      return [];
-    }
-  };
-
-  const getData = async (endpoint) => {
-    const token = cookies.token;
-    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
-    const option = {
-      headers: {
-        authorization: token,
-      },
-    };
-
-    try {
-      const response = await axios.get(fullUrlString, option);
-
-      return response.data;
-    } catch (e) {
-      return [];
-    }
-  };
-
-  const refreshTokenValue = async () => {
-    const refreshToken = cookies.refreshToken;
-
-    if (!refreshToken) return;
-
-    const data = await postData("/token", { token: refreshToken });
-    const expirationTimeToken = new Date();
-    expirationTimeToken.setMinutes(expirationTimeToken.getMinutes() + 10);
-
-    setCookie("token", data.token, {
-      path: "/",
-      expires: expirationTimeToken,
-    });
-  };
-
-  useEffect(() => {
-    const token = cookies.token;
-    const refreshToken = cookies.refreshToken;
-    if (!token && !refreshToken) return;
-    if (!refreshToken) return;
-    if (!token && refreshToken) refreshTokenValue();
-  }, [cookies.token, cookies.refreshToken]);
-
-  useEffect(() => {
-    const checkIsUserAuthorized = async () => {
-      const token = cookies.token;
-      if (!token) {
-        dispatch(setIsAuthorizedAction(false));
-        return;
-      }
-
-      try {
-        const {
-          isAuthorized = localIsAuthorizedValue.isAuthorized,
-          userDetail = localUserDetailValue,
-        } = await getData(`/isAuthorized/${token}`);
-
-        if (isAuthorized) {
-          setIsAuthorized({ isAuthorized: true });
-          dispatch(setIsAuthorizedAction(true));
-          dispatch(setIsOpenUserAuthAction(false));
-          setUserDetail(userDetail);
-          dispatch(setUserDetailAction(userDetail));
-        } else {
-          setIsAuthorized({ isAuthorized: false });
-          setUserDetail({});
-          dispatch(setIsAuthorizedAction(false));
-        }
-      } catch (err) {
-        dispatch(setIsAuthorizedAction(true));
-      }
-    };
-
-    checkIsUserAuthorized();
-  }, [cookies.token]);
+  const { handleLoginSubmit } = useSubmitLoginForm({
+    setIsAuthorizedAction,
+    setIsLoadingAction,
+    namaRef,
+    passwordRef,
+    setCookie,
+    postData,
+    setErrorsAction,
+    recaptchaRef,
+  });
+  const { handleSignUpSubmit } = useSignUpForm({
+    setIsLoadingAction,
+    setErrorsAction,
+    namaRef,
+    passwordRef,
+    postData,
+    setFormTypeAction,
+    recaptchaRef,
+  });
 
   const contextValue = {
-    dispatch,
     setIsAuthorizedAction,
     isOpenUserAuth,
     isAuthorized,
@@ -339,9 +192,10 @@ function App() {
     setIsLoadingAction,
     isLoading,
     id,
-    setId,
-    setAlasan,
+    setCapresIdAction,
+    setAlasanAction,
     alasan,
+    recaptchaRef,
   };
 
   return (

@@ -6,7 +6,6 @@ function Header() {
   const {
     isAuthorized,
     setFormTypeAction,
-    dispatch,
     removeCookieToken,
     setIsOpenUserAuthAction,
   } = useContextHook();
@@ -21,8 +20,8 @@ function Header() {
   );
 
   const handleAuthForm = (value) => {
-    dispatch(setFormTypeAction(value));
-    dispatch(setIsOpenUserAuthAction(true));
+    setFormTypeAction(value);
+    setIsOpenUserAuthAction(true);
   };
 
   const renderUnauthorizedHeader = () => (
@@ -39,7 +38,7 @@ function Header() {
   return (
     <header>
       <h1>
-        Hiburan <span>Pilpres</span>
+        Referensi <span>Coding</span>
       </h1>
       {isAuthorized ? renderAuthorizedHeader() : renderUnauthorizedHeader()}
     </header>

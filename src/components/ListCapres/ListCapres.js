@@ -4,7 +4,7 @@ import ListCapresItems from "./ListCapresItems";
 function ListCapres() {
   return (
     <section className="list-capres">
-      <h3>Coblos pilihan anda</h3>
+      <h3>Pilih referensi terbaik</h3>
       <ListCapresItems />
     </section>
   );

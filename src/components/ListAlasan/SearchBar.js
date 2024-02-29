@@ -14,7 +14,7 @@ function SearchBar({ setQuery }) {
 
   const handleQueryChange = debounce((text) => {
     setQuery(text);
-  }, 1000);
+  }, 250);
 
   return (
     <>

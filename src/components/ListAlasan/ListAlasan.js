@@ -1,25 +1,13 @@
-import React, { lazy, useMemo, useState } from "react";
+import React, { lazy } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
-import useGetAllUserData from "../../hooks/useGetAllUserData.js";
-import useGetLocalStorage from "../../hooks/useGetLocalStorage.js";
+import useListAlasan from "../../hooks/useListAlasan.js";
 import SearchBar from "./SearchBar";
 import SelectAlasan from "./SelectAlasan.js";
 const ListItem = lazy(() => import("./ListItem.js"));
 
 function ListAlasan() {
-  const [category, setCategory] = useState("1");
-  const [query, setQuery] = useState("");
-  const { isError, isLoading } = useGetAllUserData();
-  const users = useGetLocalStorage("users") || [];
-
-  const filteredUsers = useMemo(() => {
-    if (!users) return [];
-    const regex = new RegExp(query, "i");
-    return users.filter(
-      (user) =>
-        user.pilihanCapresId === category && regex.test(user.nama.toLowerCase())
-    );
-  }, [category, query, users.length]);
+  const { setCategory, category, setQuery, filteredUsers, isError, isLoading } =
+    useListAlasan();
 
   return (
     <section className="list-alasan">

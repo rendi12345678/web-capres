@@ -4,10 +4,10 @@ function useFetchs({ cookies }) {
   const productionServerUrl = "https://lovely-tan-dove.cyclic.app";
   const localServerUrl = "http://localhost:5000";
 
-  const postData = async (endpoint, data) => {
+  const postData = async (endpoint, dataToPost) => {
     const fullUrlString = `${productionServerUrl}/api${endpoint}`;
     try {
-      const { data = {} } = await axios.post(fullUrlString, data);
+      const { data = {} } = await axios.post(fullUrlString, dataToPost);
 
       return data;
     } catch (e) {

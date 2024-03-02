@@ -16,6 +16,7 @@ function useSignUpForm({
         nama: namaRef.current?.value,
         password: passwordRef.current?.value,
         recaptchaValue,
+        category: "sign-up",
       });
 
       if (data.success) {

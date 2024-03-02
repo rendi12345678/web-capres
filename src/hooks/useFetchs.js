@@ -8,7 +8,9 @@ function useFetchs({ cookies }) {
     const fullUrlString = `${productionServerUrl}/api${endpoint}`;
     try {
       const { data = {} } = await axios.post(fullUrlString, dataToPost);
+      if (data.exceeded) return alert(data.msg);
 
+      console.log(data);
       return data;
     } catch (e) {
       return [];

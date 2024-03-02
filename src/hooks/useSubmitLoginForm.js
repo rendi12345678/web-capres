@@ -17,6 +17,7 @@ function useSubmitLoginForm({
         nama: namaRef.current?.value,
         password: passwordRef.current?.value,
         recaptchaValue,
+        category: "login",
       });
 
       const expirationTimeToken = new Date();
@@ -27,19 +28,19 @@ function useSubmitLoginForm({
         expirationTimeRefreshToken.getDate() + 7
       );
 
-      if (data.success) {
-        setCookie("token", data.token, {
-          path: "/",
-          expires: expirationTimeToken,
-        });
-        setCookie("refreshToken", data.refreshToken, {
-          path: "/",
-          expires: expirationTimeRefreshToken,
-        });
-        setIsAuthorizedAction(true);
-      } else {
-        setErrorsAction(data.errors);
+      if (!data.success) {
+        return setErrorsAction(data.errors);
       }
+
+      setCookie("token", data.token, {
+        path: "/",
+        expires: expirationTimeToken,
+      });
+      setCookie("refreshToken", data.refreshToken, {
+        path: "/",
+        expires: expirationTimeRefreshToken,
+      });
+      setIsAuthorizedAction(true);
     } finally {
       recaptchaRef.current.reset();
       setIsLoadingAction(false);

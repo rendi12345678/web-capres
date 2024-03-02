@@ -8,6 +8,11 @@ function useSubmitLoginForm({
   setErrorsAction,
   recaptchaRef,
 }) {
+
+  const isEmptyObject = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
   const submitLoginForm = async () => {
     try {
       setIsLoadingAction(true);
@@ -27,6 +32,8 @@ function useSubmitLoginForm({
       expirationTimeRefreshToken.setDate(
         expirationTimeRefreshToken.getDate() + 7
       );
+
+      if(isEmptyObject(data)) return 
 
       if (!data.success) {
         return setErrorsAction(data.errors);

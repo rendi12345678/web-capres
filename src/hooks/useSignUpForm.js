@@ -7,6 +7,10 @@ function useSignUpForm({
   setFormTypeAction,
   recaptchaRef,
 }) {
+  const isEmptyObject = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
   const submitSignUpForm = async () => {
     try {
       setIsLoadingAction(true);
@@ -18,6 +22,8 @@ function useSignUpForm({
         recaptchaValue,
         category: "sign-up",
       });
+
+      if (isEmptyObject(data)) return;
 
       if (data.success) {
         setFormTypeAction(data.redirect);

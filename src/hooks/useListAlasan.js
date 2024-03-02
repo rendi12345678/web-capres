@@ -18,7 +18,7 @@ function useListAlasan() {
         user.pilihanCapresId === categoryId &&
         regex.test(user.nama.toLowerCase())
     );
-  }, [category, query]);
+  }, [category, query, users.length]);
 
   return { setCategory, category, setQuery, filteredUsers, isError, isLoading };
 }

@@ -1,8 +1,8 @@
-import React from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import React, { lazy, Suspense } from "react";
 import useContextHook from "../hooks/useContextHook";
 import useForm from "../hooks/useForm";
 import Button from "./Button";
+const ReCAPTCHA = lazy(() => import("react-google-recaptcha"));
 
 function Form({ onSubmit, children }) {
   const {
@@ -19,12 +19,14 @@ function Form({ onSubmit, children }) {
   return (
     <form onSubmit={onSubmit}>
       {children}{" "}
-      <ReCAPTCHA
-        ref={recaptchaRef}
-        sitekey={siteKey}
-        onChange={onChangeHandler}
-        style={{ transform: "scale(.7)" }}
-      />
+      <Suspense fallback={<p>Loading...</p>}>
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          sitekey={siteKey}
+          onChange={onChangeHandler}
+          style={{ transform: "scale(.7)" }}
+        />
+      </Suspense>
       {errors &&
         errors.map(
           ({ path, msg }, index) =>

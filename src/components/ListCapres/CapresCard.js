@@ -21,8 +21,8 @@ function CapresCard({
           </h1>
         </div>
         <figcaption>
-          <h5>Nama : {namaPresiden}</h5>
-          <p>Channel : {namaWakil}</p>
+          <h5>Presiden : {namaPresiden}</h5>
+          <p>Wakil : {namaWakil}</p>
         </figcaption>
       </figure>
     </li>

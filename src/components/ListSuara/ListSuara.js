@@ -19,13 +19,13 @@ function ListSuara() {
   const renderListSuara = () => (
     <>
       <li>
-        <h5>Prabowo {prabowo}</h5>
+        <h5>Prabowo : {prabowo}</h5>
       </li>
       <li>
-        <h5>Ganjar {ganjar}</h5>
+        <h5>Ganjar : {ganjar}</h5>
       </li>
       <li>
-        <h5>Anies {anies}</h5>
+        <h5>Anies : {anies}</h5>
       </li>
     </>
   );

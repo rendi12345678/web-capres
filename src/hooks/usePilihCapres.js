@@ -14,20 +14,20 @@ function usePilihCapres() {
   const listCapres = [
     {
       id: "1",
-      namaPresiden: "Sandhika Galih",
-      namaWakil: "Web Programming Unpas",
+      namaPresiden: "Prabowo Subianto",
+      namaWakil: "Gibran Rakabuming Raka",
       urlGambar: "/img/prabowo-gibran.jpg",
     },
     {
       id: "2",
-      namaPresiden: "Eko Kurniawan khannedy",
-      namaWakil: "Programmer Zaman Now",
+      namaPresiden: "Ganjar Pranowo",
+      namaWakil: "Mahfud Md",
       urlGambar: "/img/ganjar-mahfud.jpg",
     },
     {
       id: "3",
-      namaPresiden: "Kang Pukis",
-      namaWakil: "Kelas Terbuka",
+      namaPresiden: "Anies Baswedan",
+      namaWakil: "Muhaimin Iskandar",
       urlGambar: "/img/anis-muhaimin.webp",
     },
   ];

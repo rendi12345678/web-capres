@@ -38,7 +38,7 @@ function Header() {
   return (
     <header>
       <h1>
-        Referensi <span>Coding</span>
+        Fun <span>Pipres</span>
       </h1>
       {isAuthorized ? renderAuthorizedHeader() : renderUnauthorizedHeader()}
     </header>

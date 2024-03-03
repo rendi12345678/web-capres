@@ -25,6 +25,8 @@ function useSignUpForm({
 
       if (isEmptyObject(data)) return;
 
+      if (data.exceeded) alert(data.msg);
+
       if (data.success) {
         setFormTypeAction(data.redirect);
       } else {

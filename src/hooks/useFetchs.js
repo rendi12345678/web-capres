@@ -1,15 +1,12 @@
 import axios from "axios";
 
 function useFetchs({ cookies }) {
-  const productionServerUrl = "https://lovely-tan-dove.cyclic.app";
-  const localServerUrl = "http://localhost:5000";
-
-  const isEmptyObject = (obj) => {
-    return Object.keys(obj).length === 0;
-  };
+  let serverUrl = "";
+  serverUrl = "https://lovely-tan-dove.cyclic.app";
+  serverUrl = "http://localhost:5000";
 
   const postData = async (endpoint, dataToPost) => {
-    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
+    const fullUrlString = `${serverUrl}/api${endpoint}`;
     try {
       const { data = {} } = await axios.post(fullUrlString, dataToPost);
 
@@ -22,7 +19,7 @@ function useFetchs({ cookies }) {
 
   const getData = async (endpoint) => {
     const token = cookies.token;
-    const fullUrlString = `${productionServerUrl}/api${endpoint}`;
+    const fullUrlString = `${serverUrl}/api${endpoint}`;
     const option = {
       headers: {
         authorization: token,

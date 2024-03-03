@@ -8,7 +8,6 @@ function useSubmitLoginForm({
   setErrorsAction,
   recaptchaRef,
 }) {
-
   const isEmptyObject = (obj) => {
     return Object.keys(obj).length === 0;
   };
@@ -33,7 +32,9 @@ function useSubmitLoginForm({
         expirationTimeRefreshToken.getDate() + 7
       );
 
-      if(isEmptyObject(data)) return 
+      if (isEmptyObject(data)) return;
+
+      if (data.exceeded) alert(data.msg);
 
       if (!data.success) {
         return setErrorsAction(data.errors);

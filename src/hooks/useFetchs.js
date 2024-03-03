@@ -2,8 +2,8 @@ import axios from "axios";
 
 function useFetchs({ cookies }) {
   let serverUrl = "";
-  serverUrl = "https://lovely-tan-dove.cyclic.app";
   serverUrl = "http://localhost:5000";
+  serverUrl = "https://lovely-tan-dove.cyclic.app";
 
   const postData = async (endpoint, dataToPost) => {
     const fullUrlString = `${serverUrl}/api${endpoint}`;

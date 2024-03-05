@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "../Select";
 
-function SelectAlasan({ setCategory, category }) {
+function SelectAlasan({ setCategory }) {
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
   };

@@ -8,7 +8,7 @@ function useUserDetail(setCapresIdAction) {
     if (userDetail.pilihanCapresId !== "") {
       setCapresIdAction(userDetail.pilihanCapresId);
     }
-  }, [userDetail.pilihanCapresId]);
+  }, [userDetail.pilihanCapresId, , userDetail.alasan]);
 }
 
 export default useUserDetail;

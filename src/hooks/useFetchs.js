@@ -10,7 +10,6 @@ function useFetchs({ cookies }) {
     try {
       const { data = {} } = await axios.post(fullUrlString, dataToPost);
 
-      console.log(data);
       return data;
     } catch (e) {
       return [];

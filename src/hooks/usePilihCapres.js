@@ -9,6 +9,7 @@ function usePilihCapres() {
     cookies,
     setAlasanAction,
     isAuthorized,
+    alasan,
   } = useContextHook();
 
   const listCapres = [
@@ -43,8 +44,11 @@ function usePilihCapres() {
       );
 
       if (inputAlasan === null) {
-        return;
+        return alert("Input alasan tidak boleh kosong!");
       }
+
+      if (inputAlasan.length < 10)
+        return alert("Input alasan minimmal 10 karakter!");
 
       setCapresIdAction(id);
       const data = await postData(`/pilih-capres/${cookies.token}/${id}`, {
@@ -56,7 +60,7 @@ function usePilihCapres() {
         setAlasanAction(inputAlasan);
       }
     },
-    [capresId, isAuthorized]
+    [capresId, isAuthorized, alasan]
   );
 
   return { listCapres, setCapresIdAction, capresId, pilihCapres };

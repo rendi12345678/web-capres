@@ -6,12 +6,12 @@ import SelectAlasan from "./SelectAlasan.js";
 const ListItem = lazy(() => import("./ListItem.js"));
 
 function ListAlasan() {
-  const { setCategory, category, setQuery, filteredUsers, isError, isLoading } =
+  const { setCategory, setQuery, filteredUsers, isError, isLoading } =
     useListAlasan();
 
   return (
     <section className="list-alasan">
-      <SelectAlasan setCategory={setCategory} category={category} />
+      <SelectAlasan setCategory={setCategory} />
       <SearchBar setQuery={setQuery} />
       <ListItem users={filteredUsers} isError={isError} isLoading={isLoading} />
     </section>

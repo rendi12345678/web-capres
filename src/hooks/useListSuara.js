@@ -28,7 +28,7 @@ function useListSuara() {
     });
 
     return voteCounts;
-  }, [id, alasan, users.length]);
+  }, [id, alasan, users]);
 
   return { jumlahPemilihanCapres, isLoading, isError };
 }

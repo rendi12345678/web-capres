@@ -41,4 +41,4 @@ function ListItem({ users, isError, isLoading }) {
   return <ul>{renderContent()}</ul>;
 }
 
-export default React.memo(ListItem);
+export default ListItem;

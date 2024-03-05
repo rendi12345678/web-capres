@@ -275,6 +275,7 @@ select {
 
 .app-container .list-alasan li p {
   text-align: left;
+  word-wrap: break-word;
 }
 
 .app-container .list-alasan ul li .icons {
